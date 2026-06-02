@@ -1,54 +1,82 @@
 ---
 // src/components/Footer.astro
-import WithdrawalModal from './WithdrawalModal.astro';
 ---
-<footer class="w-full border-t border-zinc-800 bg-zinc-950 py-12 text-zinc-400">
-  <div class="mx-auto max-w-7xl px-6 md:px-8">
-    <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-zinc-900 pb-8">
-      <div class="flex items-center gap-3">
-        <img src="/logo.svg" alt="Ascentia Logo" class="h-6 w-6" />
-        <span class="font-black tracking-tighter text-zinc-50 font-sans">
-          ASCENTIA
-        </span>
+<footer class="bg-zinc-900 border-t border-zinc-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <h3 class="text-zinc-100 font-semibold mb-4">Ascentia</h3>
+        <p class="text-zinc-400">AI-First Learning Platform</p>
       </div>
-
-      <div class="flex flex-wrap items-center justify-center gap-6 text-sm">
-        <a href="/" class="hover:text-zinc-50 transition-colors">Domov</a>
-        <a href="/vop" class="hover:text-zinc-50 transition-colors">VOP</a>
-        <a href="/gdpr" class="hover:text-zinc-50 transition-colors">GDPR</a>
-        <!-- EU 2026 Online Contract Withdrawal Trigger -->
-        <button
-          id="btn-withdrawal-trigger"
-          class="text-zinc-400 hover:text-red-400 transition-colors cursor-pointer text-sm font-medium focus:outline-none"
-        >
+      <div>
+        <h3 class="text-zinc-100 font-semibold mb-4">Navigácia</h3>
+        <ul class="space-y-2 text-zinc-400">
+          <li><a href="#" class="hover:text-zinc-300 transition-colors">Domov</a></li>
+          <li><a href="#" class="hover:text-zinc-300 transition-colors">Kurzy</a></li>
+          <li><a href="#" class="hover:text-zinc-300 transition-colors">O nás</a></li>
+          <li><a href="#" class="hover:text-zinc-300 transition-colors">Kontakt</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-zinc-100 font-semibold mb-4">Právne</h3>
+        <ul class="space-y-2 text-zinc-400">
+          <li><a href="/vop" class="hover:text-zinc-300 transition-colors">VOP</a></li>
+          <li><a href="/gdpr" class="hover:text-zinc-300 transition-colors">GDPR</a></li>
+        </ul>
+        <button id="withdrawal-open" class="mt-4 inline-flex items-center px-3 py-2 border border-zinc-800 text-sm font-medium rounded-md text-zinc-400 hover:text-zinc-300 hover:border-zinc-300">
           Odstúpiť od zmluvy online
         </button>
       </div>
+      <div>
+        <h3 class="text-zinc-100 font-semibold mb-4">Sledujte nás</h3>
+        <div class="flex space-x-4">
+          <a href="#" class="text-zinc-400 hover:text-zinc-300 transition-colors">LinkedIn</a>
+          <a href="#" class="text-zinc-400 hover:text-zinc-300 transition-colors">Twitter</a>
+          <a href="#" class="text-zinc-400 hover:text-zinc-300 transition-colors">Facebook</a>
+        </div>
+      </div>
     </div>
-
-    <div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 text-xs text-zinc-500">
-      <p>&copy; 2026 Ascentia. Všetky práva vyhradené. AI-First & Jamstack platforma.</p>
-      <p class="flex gap-2">
-        <span>Legislatívna zhoda EÚ 2026</span>
-        <span class="text-emerald-500">&#x25CF; Kompatibilné</span>
-      </p>
+    <div class="mt-10 pt-8 border-t border-zinc-800 text-center text-xs text-zinc-500">
+      © 2026 Ascentia s.r.o. Všetky práva vyhradené.
     </div>
   </div>
-
-  <!-- Modal window for withdrawal -->
-  <WithdrawalModal />
 </footer>
 
-<script>
-  // Script to open modal
-  const triggerBtn = document.getElementById('btn-withdrawal-trigger');
-  const modal = document.getElementById('withdrawal-modal');
+<!-- Withdrawal Modal (simple) -->
+<div id="withdrawal-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-50">
+  <div class="bg-zinc-950 rounded-xl p-6 w-full max-w-md">
+    <h3 class="text-zinc-100 font-semibold mb-4">Odstúpenie od zmluvy</h3>
+    <p class="text-zinc-400 mb-6">
+      Prajete si naozaj odstúpiť od zmluvy? Tento krok je nevratný a strácate prístup ku zakúpenému obsahu.
+    </p>
+    <div class="flex justify-end space-x-3">
+      <button id="withdrawal-cancel" class="px-4 py-2 border border-zinc-800 rounded-md text-zinc-400 hover:text-zinc-300">
+        Zrušiť
+      </button>
+      <button id="withdrawal-confirm" class="px-4 py-2 bg-red-600 text-zinc-50 rounded-md hover:bg-red-700 transition-colors">
+        Potvrdiť odstúpenie od zmluvy
+      </button>
+    </div>
+  </div>
+</div>
 
-  if (triggerBtn && modal) {
-    triggerBtn.addEventListener('click', () => {
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      document.body.style.overflow = 'hidden'; // Lock scrolling
-    });
-  }
+<script>
+  const openBtn = document.getElementById('withdrawal-open');
+  const modal = document.getElementById('withdrawal-modal');
+  const cancelBtn = document.getElementById('withdrawal-cancel');
+  const confirmBtn = document.getElementById('withdrawal-confirm');
+
+  openBtn.addEventListener('click', () => {
+    modal.classList.remove('hidden');
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
+  });
+
+  confirmBtn.addEventListener('click', () => {
+    // In a real app, you would send a request to your backend to process withdrawal.
+    alert('Požiadavka na odstúpenie od zmluvy bola odoslaná. Naša podpora vás bude kontaktovať.');
+    modal.classList.add('hidden');
+  });
 </script>

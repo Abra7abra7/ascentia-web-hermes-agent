@@ -2,62 +2,26 @@
 // src/pages/vop.astro
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 ---
-
-<Layout title="Všeobecné obchodné podmienky (VOP) - Ascentia" description="Obchodné podmienky pre digitálny vzdelávací obsah platformy Ascentia.">
+<Layout>
   <Header />
-
-  <main class="flex-grow py-16">
-    <div class="mx-auto max-w-4xl px-6 md:px-8">
-      <h1 class="text-4xl font-black text-zinc-50 tracking-tight mb-8">Všeobecné obchodné podmienky (VOP)</h1>
-      
-      <div class="prose prose-invert prose-zinc max-w-none text-zinc-300 space-y-6 text-sm leading-relaxed">
-        <p class="text-xs text-zinc-500">Posledná aktualizácia: 1. januára 2026</p>
-
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-zinc-100">1. Všeobecné ustanovenia</h2>
-          <p>
-            Tieto všeobecné obchodné podmienky (ďalej len „VOP“) upravujú vzájomné práva a povinnosti medzi prevádzkovateľom platformy Ascentia (ďalej len „Predávajúci“) a kupujúcim (ďalej len „Kupujúci“), ktorý uzatvára kúpnu zmluvu prostredníctvom webového rozhrania.
-          </p>
-        </section>
-
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-zinc-100">2. Predmet zmluvy a digitálny obsah</h2>
-          <p>
-            Predmetom zmluvy je poskytovanie digitálneho plnenia (online video kurzy, mentorstvo a doplnkové digitálne materiály). Kupujúci berie na vedomie, že toto plnenie je dodávané výlučne formou online prístupu.
-          </p>
-        </section>
-
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-zinc-100">3. Právo na odstúpenie od zmluvy (Legislatíva EÚ 2026)</h2>
-          <p>
-            V zmysle aktuálnej legislatívy o ochrane spotrebiteľa platnej pre rok 2026, Kupujúci pri objednávaní digitálneho obsahu výslovne potvrdzuje a súhlasí s poskytnutím plnenia pred uplynutím zákonnej 14-dňovej lehoty na odstúpenie od zmluvy.
-          </p>
-          <div class="p-4 bg-zinc-950 border border-zinc-800 rounded-xl my-4 text-xs">
-            <strong>DÔLEŽITÉ UPOZORNENIE:</strong> Zaškrtnutím príslušného políčka pred platbou Kupujúci vyjadruje svoj výslovný súhlas s okamžitým dodaním obsahu a prehlasuje, že bol riadne poučený o tom, že <strong>týmto stráca právo na odstúpenie od zmluvy</strong> v lehote 14 dní.
-          </div>
-          <p>
-            Pokiaľ Kupujúci tento súhlas neudelí, digitálny produkt mu bude sprístupnený až po uplynutí 14-dňovej zákonnej lehoty na odstúpenie od zmluvy.
-          </p>
-        </section>
-
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-zinc-100">4. Odstúpenie od zmluvy online</h2>
-          <p>
-            Ak Kupujúci nepožiadal o okamžité dodanie obsahu (nezaškrtol waiver), má právo odstúpiť od zmluvy do 14 dní bez udania dôvodu. Pre uľahčenie tohto procesu v súlade s predpismi pre rok 2026, prevádzkovateľ poskytuje možnosť <strong>odstúpiť od zmluvy online</strong> priamo v pätičke webu cez dvojkrokový potvrdzovací systém, kde je potrebné kliknúť na „Odstúpiť od zmluvy online“ a následne potvrdiť kliknutím na tlačidlo „Potvrdiť odstúpenie od zmluvy“.
-          </p>
-        </section>
-
-        <section class="space-y-3">
-          <h2 class="text-xl font-bold text-zinc-100">5. Reklamačný poriadok</h2>
-          <p>
-            Predávajúci zodpovedá za to, že digitálny obsah má v čase sprístupnenia dohodnuté vlastnosti a funguje bez chýb. Prípadné reklamácie nefunkčnosti alebo chýb prístupu je Kupujúci povinný zaslať na kontaktný e-mail.
-          </p>
-        </section>
-      </div>
-    </div>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <section class="prose prose-lg text-zinc-400">
+      <h1 class="text-3xl font-bold text-zinc-50 mb-6">Všeobecné obchodné podmienky</h1>
+      <p>Tento dokument obsahuje VOP pre webovú platformu Ascentia.</p>
+      <p>Účinné od 2026-06-02.</p>
+      <h2 class="text-2xl font-semibold mt-6 text-zinc-50">1. Úvodné ustanovenia</h2>
+      <p>1.1. Tyto VOP upravujú vzťahy medzi poskytovateľom služieb (Ascentia s.r.o.) a zákazníkmi.</p>
+      <h2 class="text-2xl font-semibold mt-6 text-zinc-50">2. Predmet zmluvy</h2>
+      <p>2.1. Poskytovanie prístupu k digitálnym kurzom a vzdelávaciemu obsahu.</p>
+      <h2 class="text-2xl font-semibold mt-6 text-zinc-50">3. Cena a spôsob platby</h2>
+      <p>3.1. Platba cez Stripe alebo iné podporované platobné brány.</p>
+      <h2 class="text-2xl font-semibold mt-6 text-zinc-50">4. Odstúpenie od zmluvy</h2>
+      <p>4.1. Podle legislatívy EÚ 2026 má zákazník právo na odstúpenie vo lehote 14 dní, ak nevzdá sa tohoto práva výslovným súhlasom.</p>
+      <h2 class="text-2xl font-semibold mt-6 text-zinc-50">5. Ochrana osobných údajov</h2>
+      <p>5.1. Pozri oddiel GDPR.</p>
+      <h2 class="text-2xl font-semibold mt-6 text-zinc-50">6. Závrečné ustanovenia</h2>
+      <p>6.1. Tyto VOP sú súčasťou každej uzavretej zmluvy.</p>
+    </section>
   </main>
-
-  <Footer />
 </Layout>

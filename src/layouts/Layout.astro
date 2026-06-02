@@ -1,57 +1,23 @@
 ---
 // src/layouts/Layout.astro
-import '../styles/global.css';
-
-interface Props {
-  title?: string;
-  description?: string;
-}
-
-const {
-  title = "Ascentia - AI-First & Jamstack Platforma pre Prémiové Vzdelávanie",
-  description = "Prémiové kurzy zamerané na AI automatizáciu a pokročilý vývoj v roku 2026."
-} = Astro.props;
 ---
-<!doctype html>
-<html lang="sk" class="scroll-smooth">
+<!DOCTYPE html>
+<html lang="sk" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- SEO Meta Tags -->
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content="/banner.svg" />
-    
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;950&family=Outfit:wght@700;900&display=swap" rel="stylesheet">
-    
-    <meta name="generator" content={Astro.generator} />
+    <title>Ascentia | AI-First Learning Platform</title>
+    <meta name="description" content="AI-First & Jamstack Platforma pre Prémiové Vzdelávanie" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Tailwind -->
+    <link rel="stylesheet" href="/base.css" />
   </head>
-  <body class="bg-[#09090B] text-zinc-400 font-sans min-h-screen flex flex-col antialiased selection:bg-violet-600 selection:text-white">
-    <slot />
+  <body class="bg-zinc-950 text-zinc-50 antialiased">
+    <div class="min-h-screen flex flex-col">
+      <Header />
+      <main class="flex-1">{slot}</main>
+      <Footer />
+    </div>
   </body>
 </html>
-
-<style is:global>
-  :root {
-    --font-heading: 'Outfit', 'Geist Sans', system-ui, -apple-system, sans-serif;
-    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
-  }
-  
-  body {
-    font-family: var(--font-body);
-  }
-</style>

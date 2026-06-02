@@ -1,57 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+<svg width="1200" height="400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="400" fill="#09090B"/>
+  <text x="600" y="200" font-family="Geist Sans,Inter,sans-serif" font-size="48" fill="#FAFAFA" text-anchor="middle">Ascentia AI-First Learning Platform</text>
+  <!-- Simple grid mesh -->
   <defs>
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="80" result="blur" />
-    </filter>
-    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#09090B" />
-      <stop offset="50%" stop-color="#120A2A" />
-      <stop offset="100%" stop-color="#09090B" />
-    </linearGradient>
-    <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7C3AED" />
-      <stop offset="100%" stop-color="#4C1D95" />
-    </linearGradient>
-    <linearGradient id="text-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FAFAFA" />
-      <stop offset="100%" stop-color="#7C3AED" />
-    </linearGradient>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#7C3AED" stroke-width="1" stroke-opacity="0.1" />
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#1F2937" stroke-width="0.5"/>
     </pattern>
   </defs>
-
-  <!-- Background -->
-  <rect width="1200" height="630" fill="url(#bg-grad)" />
-  <rect width="1200" height="630" fill="url(#grid)" />
-
-  <!-- Ambient Glows -->
-  <circle cx="1000" cy="150" r="250" fill="#7C3AED" filter="url(#glow)" opacity="0.15" />
-  <circle cx="200" cy="500" r="200" fill="#10B981" filter="url(#glow)" opacity="0.1" />
-
-  <!-- Abstract Tech Grid Lines -->
-  <path d="M-100 100 L300 250 L800 150 L1300 450" stroke="#7C3AED" stroke-width="2" stroke-opacity="0.2" stroke-dasharray="10 5" fill="none" />
-  <path d="M-100 200 L400 350 L700 200 L1300 550" stroke="#10B981" stroke-width="1.5" stroke-opacity="0.2" stroke-dasharray="5 5" fill="none" />
-
-  <!-- Ascentia Logo Emblem -->
-  <g transform="translate(180, 240) scale(1.5)">
-    <!-- Shield/Letter A -->
-    <path d="M50 15 L85 80 L65 80 L50 48 L35 80 L15 80 Z" fill="url(#accent-grad)" />
-    <!-- Growth arrow -->
-    <path d="M50 35 L70 70" stroke="#FAFAFA" stroke-width="4" stroke-linecap="round" />
-    <!-- AI Indicator dot -->
-    <circle cx="50" cy="15" r="5" fill="#10B981" />
-  </g>
-
-  <!-- Branding Text -->
-  <text x="360" y="320" fill="url(#text-grad)" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="76" letter-spacing="-2">ASCENTIA</text>
-  <text x="360" y="375" fill="#FAFAFA" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="24" letter-spacing="4">PLATFORMA PRE VZDOSTUP</text>
-  <text x="360" y="420" fill="#A1A1AA" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="18">AI-First &amp; Jamstack vzdelávanie pre technologických lídrov roka 2026</text>
-
-  <!-- Decorative border elements -->
-  <rect x="30" y="30" width="1140" height="570" rx="12" stroke="#7C3AED" stroke-opacity="0.2" stroke-width="2" />
-  <circle cx="30" cy="30" r="4" fill="#10B981" />
-  <circle cx="1170" cy="30" r="4" fill="#7C3AED" />
-  <circle cx="30" cy="600" r="4" fill="#7C3AED" />
-  <circle cx="1170" cy="600" r="4" fill="#10B981" />
+  <rect width="1200" height="400" fill="url(#grid)"/>
 </svg>

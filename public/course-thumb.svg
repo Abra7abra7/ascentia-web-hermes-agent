@@ -1,48 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" fill="none">
-  <defs>
-    <filter id="glow-thumb" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="30" result="blur" />
-    </filter>
-    <linearGradient id="bg-grad-thumb" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#09090B" />
-      <stop offset="100%" stop-color="#180B35" />
-    </linearGradient>
-    <linearGradient id="violet-grad-thumb" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#4C1D95" />
-      <stop offset="100%" stop-color="#7C3AED" />
-    </linearGradient>
-  </defs>
-
-  <!-- Background -->
-  <rect width="640" height="360" fill="url(#bg-grad-thumb)" />
-  
-  <!-- Subtle Grid Pattern in Thumbnail -->
-  <g opacity="0.1">
-    <path d="M 0 40 L 640 40 M 0 80 L 640 80 M 0 120 L 640 120 M 0 160 L 640 160 M 0 200 L 640 200 M 0 240 L 640 240 M 0 280 L 640 280 M 0 320 L 640 320" stroke="#7C3AED" stroke-width="0.5" />
-    <path d="M 80 0 L 80 360 M 160 0 L 160 360 M 240 0 L 240 360 M 320 0 L 320 360 M 400 0 L 400 360 M 480 0 L 480 360 M 560 0 L 560 360" stroke="#7C3AED" stroke-width="0.5" />
-  </g>
-
-  <!-- Ambient Glow in the center -->
-  <circle cx="320" cy="180" r="100" fill="#7C3AED" filter="url(#glow-thumb)" opacity="0.3" />
-
-  <!-- Course Badge -->
-  <rect x="40" y="40" width="140" height="28" rx="14" fill="#7C3AED" fill-opacity="0.2" stroke="#7C3AED" stroke-width="1" />
-  <circle cx="54" cy="54" r="4" fill="#10B981" />
-  <text x="68" y="59" fill="#FAFAFA" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="10" letter-spacing="1">LIVE LESSON</text>
-
-  <!-- Play Button Circle (Glowing) -->
-  <circle cx="320" cy="180" r="40" fill="url(#violet-grad-thumb)" />
-  <!-- Inner Play Triangle -->
-  <path d="M312 165 L335 180 L312 195 Z" fill="#FAFAFA" />
-
-  <!-- Title & Info -->
-  <text x="40" y="290" fill="#FAFAFA" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="28" letter-spacing="-0.5">AI AUTOMATIZÁCIA FIRIEM</text>
-  <text x="40" y="320" fill="#10B981" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="14" letter-spacing="1">LEKCIA 01: ÚVOD DO AI AGENTOV (2026)</text>
-
-  <!-- Logo watermark in corner -->
-  <g transform="translate(560, 30) scale(0.5)">
-    <path d="M50 15 L85 80 L65 80 L50 48 L35 80 L15 80 Z" fill="url(#violet-grad-thumb)" />
-    <path d="M50 35 L70 70" stroke="#FAFAFA" stroke-width="4" stroke-linecap="round" />
-    <circle cx="50" cy="15" r="5" fill="#10B981" />
-  </g>
+<svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="225" rx="12" fill="#09090B"/>
+  <text x="200" y="110" font-family="Geist Sans,Inter,sans-serif" font-size="24" fill="#FAFAFA" text-anchor="middle" font-weight="600">Video Lesson Preview</text>
+  <circle cx="200" cy="80" r="30" stroke="#7C3AED" stroke-width="4" fill="none"/>
+  <polyline points="170,90 200,120 230,90" stroke="#7C3AED" stroke-width="4" fill="none" stroke-linecap="round"/>
 </svg>

@@ -1,29 +1,26 @@
 ---
 // src/components/Header.astro
 ---
-<header class="sticky top-0 z-50 w-full border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-md">
-  <div class="mx-auto flex max-w-7xl h-16 items-center justify-between px-6 md:px-8">
-    <a href="/" class="flex items-center gap-3 transition-transform hover:scale-102">
-      <img src="/logo.svg" alt="Ascentia Logo" class="h-8 w-8" />
-      <span class="font-black text-2xl tracking-tighter text-zinc-50 font-sans">
-        ASCENTIA
-      </span>
-    </a>
-
-    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
-      <a href="/" class="transition-colors hover:text-zinc-50">Domov</a>
-      <a href="/#onboarding" class="transition-colors hover:text-zinc-50">AI Sprievodca</a>
-      <a href="/vop" class="transition-colors hover:text-zinc-50">Obchodné podmienky</a>
-      <a href="/gdpr" class="transition-colors hover:text-zinc-50">GDPR</a>
-    </nav>
-
-    <div class="flex items-center gap-4">
-      <a
-        href="/#onboarding"
-        class="relative inline-flex items-center justify-center rounded-xl bg-violet-600 px-4 py-2 text-xs font-bold text-zinc-50 transition-all hover:bg-violet-700 hover:shadow-[0_0_20px_rgba(124,58,237,0.4)]"
-      >
-        Spustiť vzostup
-      </a>
+<header class="bg-zinc-950 border-b border-zinc-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <div class="flex">
+        <a href="/" class="flex-shrink-0">
+          <img src="/logo.svg" alt="Ascentia Logo" class="h-10 w-auto" />
+        </a>
+      </div>
+      <div class="hidden md:flex md:items-center md:space-x-6">
+        <a href="#" class="text-zinc-400 hover:text-zinc-300 transition-colors font-medium">Domov</a>
+        <a href="#" class="text-zinc-400 hover:text-zinc-300 transition-colors font-medium">Kurzy</a>
+        <a href="#" class="text-zinc-400 hover:text-zinc-300 transition-colors font-medium">O nás</a>
+        <a href="#" class="text-zinc-400 hover:text-zinc-300 transition-colors font-medium">Kontakt</a>
+      </div>
+      <div class="md:hidden">
+        <button class="p-2 rounded-md text-zinc-400 hover:text-zinc-300">
+          <!-- Hamburger icon placeholder -->
+          ☰
+        </button>
+      </div>
     </div>
   </div>
 </header>

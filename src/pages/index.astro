@@ -2,121 +2,27 @@
 // src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import AIOnboarding from '../components/AIOnboarding.svelte';
+import LegalWaiver from '../components/LegalWaiver.astro';
 ---
-
 <Layout>
   <Header />
-  
-  <main class="flex-grow">
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden pt-20 pb-16 md:pt-32 md:pb-24">
-      <!-- Glow Gradients -->
-      <div class="absolute top-0 left-1/4 -z-10 h-[600px] w-[600px] rounded-full bg-violet-900/20 blur-[120px] pointer-events-none"></div>
-      <div class="absolute bottom-10 right-1/4 -z-10 h-[400px] w-[400px] rounded-full bg-emerald-950/20 blur-[100px] pointer-events-none"></div>
-
-      <div class="mx-auto max-w-7xl px-6 md:px-8 text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-950/20 px-3 py-1 text-xs font-bold text-violet-400 mb-6">
-          <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          AI-First Vzdelávanie pre rok 2026
-        </div>
-
-        <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-zinc-50 leading-[1.1] mb-6">
-          Dosiahni svoj technologický <span class="bg-gradient-to-r from-violet-400 to-violet-600 bg-clip-text text-transparent">vzostup</span>.
-        </h1>
-        
-        <p class="mx-auto max-w-2xl text-base md:text-xl text-zinc-400 leading-relaxed mb-10">
-          Zabudni na nudné kurzy. Naša interaktívna platforma Ascentia ti prispôsobí študijnú cestu v reálnom čase pomocou umelej inteligencie.
-        </p>
-
-        <div class="flex flex-wrap justify-center gap-4 mb-20">
-          <a
-            href="#onboarding"
-            class="rounded-xl bg-zinc-50 px-6 py-3.5 text-sm font-bold text-zinc-950 transition-all hover:bg-zinc-200 hover:shadow-[0_0_30px_rgba(250,250,250,0.2)]"
-          >
-            Spustiť AI Sprievodcu
-          </a>
-          <a
-            href="#courses"
-            class="rounded-xl border border-zinc-800 bg-zinc-900/50 px-6 py-3.5 text-sm font-bold text-zinc-300 transition-colors hover:border-zinc-700 hover:text-zinc-50"
-          >
-            Prehľad programov
-          </a>
-        </div>
-      </div>
-
-      <!-- Feature highlight image mockup -->
-      <div class="mx-auto max-w-5xl px-6 md:px-8">
-        <div class="relative rounded-2xl border border-zinc-800 bg-zinc-900/30 p-2 backdrop-blur-sm">
-          <img
-            src="/banner.svg"
-            alt="Ascentia Dashboard Mockup"
-            class="w-full rounded-xl border border-zinc-850 shadow-2xl"
-          />
-        </div>
-      </div>
+  <main class="max-w-4xl mx-auto px-4 py-12">
+    <section class="text-center mb-12">
+      <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-zinc-50">
+        Ascentia: AI-First Learning Platform
+      </h1>
+      <p class="mt-6 text-xl md:text-2xl font-bold tracking-tight text-zinc-100">
+        Prémiové vzdelávanie pre budúcnosť
+      </p>
     </section>
 
-    <!-- Interactive AI Onboarding -->
-    <section id="onboarding" class="py-20 border-t border-zinc-900 bg-zinc-950">
-      <div class="mx-auto max-w-7xl px-6 md:px-8 text-center mb-12">
-        <h2 class="text-3xl md:text-5xl font-black tracking-tight text-zinc-50 mb-4">
-          Personalizovaný plán štúdia
-        </h2>
-        <p class="text-zinc-400 max-w-md mx-auto text-sm">
-          Zodpovedz 2 rýchle otázky a náš AI algoritmus ti pripraví vzdelávací modul na mieru.
-        </p>
-      </div>
-
-      <div class="px-6">
-        <AIOnboarding client:load />
-      </div>
+    <section class="bg-zinc-900 rounded-2xl p-8">
+      <AIOnboarding />
     </section>
 
-    <!-- Static Courses Section -->
-    <section id="courses" class="py-20 border-t border-zinc-900">
-      <div class="mx-auto max-w-7xl px-6 md:px-8">
-        <h2 class="text-3xl md:text-5xl font-black tracking-tight text-zinc-50 mb-12 text-center">
-          Naše prémiové programy
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <!-- Course Card 1 -->
-          <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-6 flex flex-col justify-between hover:border-zinc-800 transition-all group">
-            <div>
-              <div class="relative overflow-hidden rounded-xl mb-6">
-                <img src="/course-thumb.svg" alt="Course 1" class="w-full transition-transform duration-300 group-hover:scale-102" />
-              </div>
-              <h3 class="text-2xl font-bold text-zinc-100 mb-2">Automatizácia firiem pomocou AI agentov</h3>
-              <p class="text-zinc-400 text-sm leading-relaxed mb-6">
-                Kompletný návod na nasadenie a prepájanie autonómnych agentov pre e-shopy, podporu a predajné procesy. Ušetrite desiatky hodín týždenne.
-              </p>
-            </div>
-            <a href="#onboarding" class="text-violet-400 hover:text-violet-300 font-bold text-sm flex items-center gap-2">
-              Spustiť konfigurátor &rarr;
-            </a>
-          </div>
-
-          <!-- Course Card 2 -->
-          <div class="rounded-2xl border border-zinc-850 bg-zinc-900/30 p-6 flex flex-col justify-between hover:border-zinc-800 transition-all group">
-            <div>
-              <div class="relative overflow-hidden rounded-xl mb-6">
-                <img src="/course-thumb.svg" alt="Course 2" class="w-full transition-transform duration-300 group-hover:scale-102 filter hue-rotate-60" />
-              </div>
-              <h3 class="text-2xl font-bold text-zinc-100 mb-2">Masterclass efektívneho kódovania a LLM</h3>
-              <p class="text-zinc-400 text-sm leading-relaxed mb-6">
-                Naučte sa spolupracovať s modernými AI modelmi. Od Prompt Engineeringu po vývoj a produkčný deployment robustných webových aplikácií.
-              </p>
-            </div>
-            <a href="#onboarding" class="text-violet-400 hover:text-violet-300 font-bold text-sm flex items-center gap-2">
-              Spustiť konfigurátor &rarr;
-            </a>
-          </div>
-        </div>
-      </div>
+    <section class="mt-12">
+      <LegalWaiver />
     </section>
   </main>
-
-  <Footer />
 </Layout>
