@@ -75,10 +75,12 @@ func main() {
 	mux.HandleFunc("/privacy", server.HandlePrivacy)
 	mux.HandleFunc("/kompas", server.HandleKompas)
 	mux.HandleFunc("/voice-inquiry", server.HandleVoice)
+	mux.HandleFunc("/faq", server.HandleFAQ)
 
 	// POST trasy a zber leadov
 	mux.HandleFunc("/api/contact", server.HandleContactSubmit)
 	mux.HandleFunc("/api/stream", server.HandleStreamingAI)
+	mux.HandleFunc("/api/voice-upload", server.HandleVoiceUpload)
 
 	log.Printf("[Ascentia Web] Server úspešne naštartovaný na sluzbe http://localhost:%s\n", port)
 	if err := http.ListenAndServe(":"+port, mux); err != nil {

@@ -4,20 +4,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ascentia s. r. o. - Špičkový vývoj softvéru v jazyku Go a podnikové AI kognitívne riešenia, AI agenti a integrácia Voice-to-CRM na slovenskom a európskom trhu.">
+    <meta name="description" content="ASCENTIA s. r. o. — Prémiový vývoj high-performance softvéru v Go (Golang), autonómne AI systémy a Voice-to-CRM integrácie pre enterprise klientov na slovenskom a európskom trhu.">
+    <meta name="keywords" content="AI agenti na mieru, Go vývoj, Golang backend, Voice-to-CRM, AI automatizácie, enterprise softvér, high-performance backend, SQLite, HTMX, Slovensko AI">
+    <meta name="author" content="ASCENTIA s. r. o.">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ASCENTIA s. r. o. — Enterprise AI & High-Performance Go Backend">
+    <meta property="og:description" content="Prémiové AI kognitívne systémy, model tuning a super-výkonný vývoj v Go. Plne GDPR compliant.">
+    <meta property="og:locale" content="sk_SK">
+    <meta property="og:url" content="https://ascentia-web-hermes-agent.fly.dev/">
+    <link rel="canonical" href="https://ascentia-web-hermes-agent.fly.dev/">
     <title>{{template "title" .}} | ASCENTIA s. r. o.</title>
-    
-    <!-- Sémantické JSON-LD mikrodáta pre GEO & SEO 2026 -->
+
+    <!-- JSON-LD: Organization -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "ProfessionalService",
+      "@type": "Organization",
       "name": "ASCENTIA s. r. o.",
-      "image": "https://github.com/ascentia-web/logo.png",
-      "@id": "https://ascentia.sk",
-      "url": "https://ascentia.sk",
-      "telephone": "+421944000111",
-      "priceRange": "$$$$",
+      "legalName": "ASCENTIA s. r. o.",
+      "identifier": {
+        "@type": "PropertyValue",
+        "name": "IČO",
+        "value": "51858959"
+      },
+      "url": "https://ascentia-web-hermes-agent.fly.dev/",
+      "logo": "https://ascentia-web-hermes-agent.fly.dev/static/img/logo.png",
+      "email": "ascentia@agentmail.to",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Námestie slobody 1",
@@ -25,43 +38,63 @@
         "postalCode": "81106",
         "addressCountry": "SK"
       },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 48.151,
-        "longitude": 17.111
+      "sameAs": ["https://www.finstat.sk/51858959"]
+    }
+    </script>
+
+    <!-- JSON-LD: ProfessionalService -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "ASCENTIA s. r. o. — AI & Go Backend Development",
+      "image": "https://ascentia-web-hermes-agent.fly.dev/static/img/og-image.png",
+      "@id": "https://ascentia-web-hermes-agent.fly.dev/",
+      "url": "https://ascentia-web-hermes-agent.fly.dev/",
+      "telephone": "+421944000111",
+      "priceRange": "$$$$",
+      "email": "ascentia@agentmail.to",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Námestie slobody 1",
+        "addressLocality": "Bratislava",
+        "postalCode": "81106",
+        "addressCountry": "SK"
       },
       "openingHoursSpecification": {
         "@type": "OpeningHoursSpecification",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday"
-        ],
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
         "opens": "09:00",
         "closes": "17:00"
       },
-      "sameAs": [
-        "https://www.finstat.sk/51858959"
-      ]
+      "sameAs": ["https://www.finstat.sk/51858959"]
+    }
+    </script>
+
+    <!-- JSON-LD: WebSite (pre LLM vyhľadávače) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "ASCENTIA s. r. o.",
+      "url": "https://ascentia-web-hermes-agent.fly.dev/",
+      "inLanguage": "sk-SK",
+      "description": "Prémiový vývoj softvéru v Go, autonómne AI systémy a Voice-to-CRM integrácie pre enterprise klientov."
     }
     </script>
 
     <link rel="stylesheet" href="/static/css/style.css">
-    <!-- HTMX 2.x pre bleskové dynamické interakcie -->
-    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHc6g6W6uXq9GfF4C3F" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
+    <link rel="sitemap" type="application/xml" href="/static/sitemap.xml">
+    <script src="https://unpkg.com/htmx.org@2.0.0" crossorigin="anonymous"></script>
 </head>
 <body>
-
-    <!-- Dynamické tekuté pozadie -->
     <div id="liquid-bg"></div>
 
     <header class="header">
         <div class="container header-container">
             <a href="/" class="logo">
                 <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
-                    <!-- Geometric Falcon wings + Linden Leaf symbol -->
                     <path d="M10 20 L50 45 L90 20 L50 80 Z" stroke="#00F0FF" stroke-width="4" fill="rgba(0, 240, 255, 0.1)"></path>
                     <path d="M50 45 L50 80" stroke="#00F0FF" stroke-width="3"></path>
                     <circle cx="50" cy="30" r="4" fill="#00F0FF"></circle>
@@ -76,6 +109,7 @@
                 <a href="/process">Ako fungujeme</a>
                 <a href="/kompas">AI Kompas</a>
                 <a href="/voice-inquiry">Hlasový dopyt</a>
+                <a href="/faq">FAQ</a>
             </nav>
         </div>
     </header>
@@ -90,12 +124,14 @@
                 <h3>ASCENTIA s. r. o.</h3>
                 <p>Prémiové AI kognitívne systémy, model tuning a super-výkonný vývoj v jazyku Go (Golang).</p>
                 <p>IČO: 51858959 | DIČ: 2120815124 | Sídlo: Bratislava, Slovenská republika</p>
+                <p>Email: <a href="mailto:ascentia@agentmail.to" class="neon-link">ascentia@agentmail.to</a></p>
             </div>
             <div class="footer-links">
                 <a href="/">Domov</a>
                 <a href="/services">Služby</a>
                 <a href="/process">Proces</a>
-                <a href="/privacy">Ochrana osobných údajov & GDPR</a>
+                <a href="/privacy">Ochrana osobných údajov &amp; GDPR</a>
+                <a href="/faq">FAQ</a>
             </div>
         </div>
         <div class="footer-bottom">
@@ -103,10 +139,9 @@
         </div>
     </footer>
 
-    <!-- Cookie lišta -->
     <div id="cookie-bar" class="cookie-bar">
         <div class="cookie-content">
-            <p>Táto stránka používa iba nevyhnutné a optimalizačné súbory cookies v súlade s GDPR na meranie nákupnej konverzie. <a href="/privacy">Viac info o ochrane súkromia</a>.</p>
+            <p>Táto stránka používa iba nevyhnutné cookies v súlade s GDPR. <a href="/privacy">Viac info o ochrane súkromia</a>.</p>
             <button onclick="acceptCookies()" class="btn btn-accent btn-sm">Rozumiem</button>
         </div>
     </div>

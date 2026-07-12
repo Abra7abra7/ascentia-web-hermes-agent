@@ -22,7 +22,7 @@ func NewServer(db *sql.DB, aiProvider ai.Provider) (*Server, error) {
 	layoutPath := filepath.Join("templates", "layout.html")
 
 	// Parzneme každú stránku samostatne s layoutom, aby sa predišlo kolízii define blokov
-	pages := []string{"dashboard", "services", "process", "privacy", "kompas", "voice"}
+	pages := []string{"dashboard", "services", "process", "privacy", "kompas", "voice", "faq"}
 	for _, page := range pages {
 		pagePath := filepath.Join("templates", page+".html")
 		tmpl, err := template.New("layout").ParseFiles(layoutPath, pagePath)
@@ -66,6 +66,10 @@ func (s *Server) HandleKompas(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) HandleVoice(w http.ResponseWriter, r *http.Request) {
 	s.renderTemplate(w, r, "voice", nil)
+}
+
+func (s *Server) HandleFAQ(w http.ResponseWriter, r *http.Request) {
+	s.renderTemplate(w, r, "faq", nil)
 }
 
 func (s *Server) renderTemplate(w http.ResponseWriter, r *http.Request, name string, data interface{}) {
