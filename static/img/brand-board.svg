@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <rect width="1200" height="900" fill="#0A192F"/>
+  <line x1="400" y1="0" x2="400" y2="900" stroke="#1E2229" stroke-width="1"/>
+  <line x1="800" y1="0" x2="800" y2="900" stroke="#1E2229" stroke-width="1"/>
+  <line x1="0" y1="300" x2="1200" y2="300" stroke="#1E2229" stroke-width="1"/>
+  <line x1="0" y1="600" x2="1200" y2="600" stroke="#1E2229" stroke-width="1"/>
+  <text x="20" y="30" fill="#8892b0" font-size="12" font-family="monospace">01 / LOGO</text>
+  <text x="420" y="30" fill="#8892b0" font-size="12" font-family="monospace">02 / CONSTRUCTION</text>
+  <text x="820" y="30" fill="#8892b0" font-size="12" font-family="monospace">03 / DIGITAL</text>
+  <text x="20" y="320" fill="#8892b0" font-size="12" font-family="monospace">04 / TAGLINE</text>
+  <text x="420" y="320" fill="#8892b0" font-size="12" font-family="monospace">05 / COLOR</text>
+  <text x="820" y="320" fill="#8892b0" font-size="12" font-family="monospace">06 / TYPOGRAPHY</text>
+  <text x="20" y="620" fill="#8892b0" font-size="12" font-family="monospace">07 / CARD</text>
+  <text x="420" y="620" fill="#8892b0" font-size="12" font-family="monospace">08 / IMAGE</text>
+  <text x="820" y="620" fill="#8892b0" font-size="12" font-family="monospace">09 / SYSTEM</text>
+</svg>
