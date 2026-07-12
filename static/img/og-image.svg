@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0A192F"/>
+      <stop offset="100%" style="stop-color:#0d2238"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00F0FF;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#00F0FF;stop-opacity:0.2"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Circuit pattern -->
+  <g opacity="0.05" stroke="#00F0FF" stroke-width="1" fill="none">
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="0" y1="500" x2="1200" y2="500"/>
+    <line x1="200" y1="0" x2="200" y2="630"/>
+    <line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="800" y1="0" x2="800" y2="630"/>
+    <line x1="1000" y1="0" x2="1000" y2="630"/>
+  </g>
+
+  <!-- Logo shape -->
+  <g transform="translate(540, 80)" filter="url(#glow)">
+    <path d="M10 20 L60 50 L110 20 L60 100 Z" stroke="#00F0FF" stroke-width="3" fill="rgba(0,240,255,0.1)"/>
+    <path d="M60 50 L60 100" stroke="#00F0FF" stroke-width="2"/>
+    <circle cx="60" cy="35" r="3" fill="#00F0FF"/>
+    <circle cx="45" cy="42" r="2.5" fill="#00F0FF"/>
+    <circle cx="75" cy="42" r="2.5" fill="#00F0FF"/>
+  </g>
+
+  <!-- Company name -->
+  <text x="600" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="64" font-weight="bold" fill="#F4F6F9" letter-spacing="4">ASCENTIA</text>
+  <text x="600" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#00F0FF" letter-spacing="6">S.R.O.</text>
+
+  <!-- Tagline -->
+  <rect x="200" y="290" width="800" height="2" fill="url(#accent)"/>
+  <text x="600" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#00F0FF" filter="url(#glow)">Enterprise AI &amp; High-Performance Go Backend</text>
+
+  <!-- Feature pills -->
+  <g font-family="Arial, sans-serif" font-size="16" fill="#F4F6F9">
+    <rect x="180" y="390" width="200" height="50" rx="25" fill="rgba(0,240,255,0.1)" stroke="#00F0FF" stroke-width="1"/>
+    <text x="280" y="420" text-anchor="middle">🤖 AI Systems</text>
+
+    <rect x="420" y="390" width="200" height="50" rx="25" fill="rgba(0,240,255,0.1)" stroke="#00F0FF" stroke-width="1"/>
+    <text x="520" y="420" text-anchor="middle">⚡ Go Backend</text>
+
+    <rect x="660" y="390" width="200" height="50" rx="25" fill="rgba(0,240,255,0.1)" stroke="#00F0FF" stroke-width="1"/>
+    <text x="760" y="420" text-anchor="middle">🎙️ Voice-to-CRM</text>
+  </g>
+
+  <!-- Bottom info -->
+  <text x="600" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#8892b0">ascentia@agentmail.to  |  IČO: 51858959  |  Bratislava, Slovensko</text>
+
+  <!-- Bottom accent line -->
+  <rect x="0" y="620" width="1200" height="10" fill="url(#accent)"/>
+</svg>
