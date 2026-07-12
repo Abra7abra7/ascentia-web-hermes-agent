@@ -4,31 +4,44 @@ import (
 	"database/sql"
 	"html/template"
 	"net/http"
+	"os"
+	"path/filepath"
 	"ascentia-web/ai"
 )
 
 type Server struct {
-	DB   *sql.DB
-	AI   ai.Provider
-	Templ *template.Template
+	DB    *sql.DB
+	AI    ai.Provider
+	Templ map[string]*template.Template
 }
 
 func NewServer(db *sql.DB, aiProvider ai.Provider) (*Server, error) {
-	// Parse all HTML files from templates directory
-	tmpl, err := template.ParseGlob("templates/*.html")
-	if err != nil {
-		return nil, err
+	templates := make(map[string]*template.Template)
+
+	// Načítame layout ako základ pre všetky stránky
+	layoutPath := filepath.Join("templates", "layout.html")
+
+	// Parzneme každú stránku samostatne s layoutom, aby sa predišlo kolízii define blokov
+	pages := []string{"dashboard", "services", "process", "privacy", "kompas", "voice"}
+	for _, page := range pages {
+		pagePath := filepath.Join("templates", page+".html")
+		tmpl, err := template.New("layout").ParseFiles(layoutPath, pagePath)
+		if err != nil {
+			return nil, err
+		}
+		templates[page] = tmpl
 	}
 
 	return &Server{
 		DB:    db,
 		AI:    aiProvider,
-		Templ: tmpl,
+		Templ: templates,
 	}, nil
 }
 
 func (s *Server) HandleIndex(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
+		// Pre neexistujúce cesty skúsime obslúžiť statické súbory
 		http.NotFound(w, r)
 		return
 	}
@@ -57,12 +70,39 @@ func (s *Server) HandleVoice(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) renderTemplate(w http.ResponseWriter, r *http.Request, name string, data interface{}) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	
-	// Pre HTMX požiadavky môžeme vracať len čiastočný fragment,
-	// ale pre plné načítania vrátime kompletný layout.
-	// Tu pre jednoduchosť a spoľahlivosť rendrujeme celú šablónu, ktorá zahŕňa layout interným mechanizmom
-	err := s.Templ.ExecuteTemplate(w, name+".html", data)
+
+	tmpl, ok := s.Templ[name]
+	if !ok {
+		http.Error(w, "Template not found: "+name, http.StatusInternalServerError)
+		return
+	}
+
+	// ExecuteTemplate volá "layout" šablónu, ktorá obsahuje {{template "content" .}}
+	// a {{template "title" .}} bloky z príslušnej stránky
+	err := tmpl.ExecuteTemplate(w, "layout", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+// HandleStatic servuje statické súbory (CSS, JS, obrázky)
+func (s *Server) HandleStatic(w http.ResponseWriter, r *http.Request) {
+	// Bezpečnostná kontrola: zamedzenie directory traversal
+	cleanPath := filepath.Clean(r.URL.Path)
+	if cleanPath == "" || cleanPath == "/" {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Servujeme z static adresára
+	staticDir := "static"
+	filePath := filepath.Join(staticDir, cleanPath)
+
+	// Overíme, či súbor existuje
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		http.NotFound(w, r)
+		return
+	}
+
+	http.ServeFile(w, r, filePath)
 }
