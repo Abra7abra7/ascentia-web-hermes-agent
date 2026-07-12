@@ -92,6 +92,9 @@ func main() {
 		server.RenderTemplate(w, r, "blog_voice_crm_case")
 	})
 
+	// Admin dashboard
+	mux.HandleFunc("/admin", server.HandleAdmin)
+
 	// POST trasy a zber leadov
 	mux.HandleFunc("/api/contact", server.HandleContactSubmit)
 	mux.HandleFunc("/api/stream", server.HandleStreamingAI)

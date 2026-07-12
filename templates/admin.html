@@ -1,0 +1,90 @@
+{{template "layout" .}}
+
+{{define "title"}}Admin Dashboard — ASCENTIA{{end}}
+
+{{define "content"}}
+<section class="container" style="padding-top: 30px; padding-bottom: 60px;">
+    <h1 class="glow-text" style="margin-bottom: 10px;">Admin Dashboard</h1>
+    <p style="color: var(--text-muted); margin-bottom: 30px;">Prehľad všetkých dopytov a lead scoringu</p>
+
+    <div class="grid grid-3" style="margin-bottom: 30px;">
+        <div class="glass-panel" style="text-align: center; padding: 20px;">
+            <strong style="font-size: 32px; color: var(--accent);">{{.TotalLeads}}</strong>
+            <p style="color: var(--text-muted); font-size: 14px;">Celkom leadov</p>
+        </div>
+        <div class="glass-panel" style="text-align: center; padding: 20px;">
+            <strong style="font-size: 32px; color: var(--accent);">{{.TotalFollowUp}}</strong>
+            <p style="color: var(--text-muted); font-size: 14px;">Follow-up odoslaných</p>
+        </div>
+        <div class="glass-panel" style="text-align: center; padding: 20px;">
+            <strong style="font-size: 32px; color: #ff5f57;">{{.HighUrgency}}</strong>
+            <p style="color: var(--text-muted); font-size: 14px;">High urgency</p>
+        </div>
+    </div>
+
+    {{if .Inquiries}}
+    <div class="glass-panel" style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+            <thead>
+                <tr style="border-bottom: 1px solid var(--panel-border);">
+                    <th style="padding: 12px; text-align: left; color: var(--accent);">ID</th>
+                    <th style="padding: 12px; text-align: left; color: var(--accent);">Meno</th>
+                    <th style="padding: 12px; text-align: left; color: var(--accent);">Email</th>
+                    <th style="padding: 12px; text-align: left; color: var(--accent);">Firma</th>
+                    <th style="padding: 12px; text-align: center; color: var(--accent);">Score</th>
+                    <th style="padding: 12px; text-align: center; color: var(--accent);">Urgency</th>
+                    <th style="padding: 12px; text-align: center; color: var(--accent);">Budget</th>
+                    <th style="padding: 12px; text-align: center; color: var(--accent);">Follow-up</th>
+                    <th style="padding: 12px; text-align: left; color: var(--accent);">Vytvorené</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Inquiries}}
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: 12px; color: var(--text-muted);">#{{.ID}}</td>
+                    <td style="padding: 12px; color: var(--text-primary);">{{.Name}}</td>
+                    <td style="padding: 12px;"><a href="mailto:{{.Email}}" style="color: var(--accent);">{{.Email}}</a></td>
+                    <td style="padding: 12px; color: var(--text-primary);">{{.Company}}</td>
+                    <td style="padding: 12px; text-align: center;">
+                        <span style="color: {{if gt .Score 70}}#00F0FF{{else if gt .Score 40}}#febc2e{{else}}#8892b0{{end}}; font-weight: bold;">{{.Score}}</span>
+                    </td>
+                    <td style="padding: 12px; text-align: center;">
+                        {{if eq .Urgency "high"}}<span style="color: #ff5f57; font-weight: bold;">HIGH</span>
+                        {{else if eq .Urgency "medium"}}<span style="color: #febc2e;">MED</span>
+                        {{else if eq .Urgency "low"}}<span style="color: #8892b0;">LOW</span>
+                        {{else}}<span style="color: var(--text-muted);">—</span>{{end}}
+                    </td>
+                    <td style="padding: 12px; text-align: center; color: var(--text-primary);">{{.Budget}}</td>
+                    <td style="padding: 12px; text-align: center;">
+                        {{if eq .FollowUp 1}}<span style="color: #28c840;">✓</span>{{else}}<span style="color: var(--text-muted);">—</span>{{end}}
+                    </td>
+                    <td style="padding: 12px; color: var(--text-muted); font-size: 12px;">{{.CreatedAt}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+
+    <h2 style="margin-top: 30px; color: var(--accent);">Detail dopytov</h2>
+    {{range .Inquiries}}
+    <div class="glass-panel" style="margin-bottom: 15px; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <strong style="color: var(--text-primary);">{{.Name}} — {{.Company}}</strong>
+            <span style="color: var(--text-muted); font-size: 12px;">{{.CreatedAt}}</span>
+        </div>
+        <p style="color: var(--text-muted); margin-bottom: 10px;">
+            <a href="mailto:{{.Email}}" style="color: var(--accent);">{{.Email}}</a>
+            {{if .VoicePath}}| <span style="color: var(--accent);">🎙️ Hlasový dopyt</span>{{end}}
+        </p>
+        <p style="color: var(--text-primary); margin-bottom: 10px;">{{.Message}}</p>
+        {{if .Summary}}<p style="color: var(--text-muted); font-size: 13px; padding: 10px; background: rgba(0,240,255,0.05); border-radius: 8px;">AI: {{.Summary}}</p>{{end}}
+    </div>
+    {{end}}
+
+    {{else}}
+    <div class="glass-panel" style="text-align: center; padding: 60px;">
+        <p style="color: var(--text-muted); font-size: 18px;">Zatiaľ žiadne dopyty.</p>
+    </div>
+    {{end}}
+</section>
+{{end}}

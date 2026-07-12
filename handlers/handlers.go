@@ -22,7 +22,7 @@ func NewServer(db *sql.DB, aiProvider ai.Provider) (*Server, error) {
 	layoutPath := filepath.Join("templates", "layout.html")
 
 	// Parzneme každú stránku samostatne s layoutom, aby sa predišlo kolízii define blokov
-	pages := []string{"dashboard", "services", "process", "privacy", "kompas", "voice", "faq", "consultation", "blog", "blog_go_pre_enterprise", "blog_ai_pravnikom", "blog_voice_crm_case", "pricing"}
+	pages := []string{"dashboard", "services", "process", "privacy", "kompas", "voice", "faq", "consultation", "blog", "blog_go_pre_enterprise", "blog_ai_pravnikom", "blog_voice_crm_case", "pricing", "admin"}
 	for _, page := range pages {
 		pagePath := filepath.Join("templates", page+".html")
 		tmpl, err := template.New("layout").ParseFiles(layoutPath, pagePath)
