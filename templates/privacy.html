@@ -1,0 +1,45 @@
+{{template "layout" .}}
+
+{{define "title"}}Ochrana Osobných Údajov a GDPR Súlad{{end}}
+
+{{define "content"}}
+<section class="container privacy-section text-center">
+    <h1 class="glow-text">Ochrana osobných údajov (GDPR)</h1>
+    <p class="subheader">Súlad s legislatívou Európskej únie a transparentné zaobchádzanie so zákazníckymi dátami.</p>
+</section>
+
+<section class="container privacy-content">
+    <div class="glass-panel text-card pad-large">
+        <h2>1. Identifikácia Prevádzkovateľa</h2>
+        <p>Prevádzkovateľom vašich osobných údajov je spoločnosť <strong>ASCENTIA s. r. o.</strong>, so sídlom Námestie slobody 1, Bratislava, Slovenská republika, IČO: 51858959, zapísaná v Obchodnom registri Okresného súdu Bratislava I, Oddiel: Sro, Vložka číslo: 130190/B (ďalej len „Prevádzkovateľ“).</p>
+
+        <h2>2. Účel Spracovania Dát</h2>
+        <p>Vaše osobné údaje (Meno, E-mail, Názov spoločnosti, text dopytu alebo hlasová nahrávka) sú spracúvané výhradne za účelom:</p>
+        <ul>
+            <li>Vybavenia vašich dopytov a požiadaviek zadaných prostredníctvom kontaktného B2B formulára.</li>
+            <li>Spracovania a prepisu dopytu pomocou integrovaného kognitívneho modulu AI v sekcii AI Kompas a Hlasový dopyt.</li>
+            <li>Nezáväznej kalkulácie našich služieb.</li>
+        </ul>
+
+        <h2>3. Právny Základ Spracúvania</h2>
+        <p>Právnym základom spracúvania osobných údajov je plnenie predzmluvných a zmluvných vzťahov v zmysle Čl. 6 ods. 1 písm. b) Nariadenia GDPR a oprávnený záujem prevádzkovateľa spracúvať obchodné dopyty.</p>
+
+        <h2>4. Doba Uchovávania Dát</h2>
+        <p>Údaje o dopytoch uchovávame po dobu nevyhnutnú na vybavenie žiadosti, najviac po dobu 12 mesiacov od posledného kontaktu, pokiaľ nedôjde k uzavretiu riadnej B2B zmluvy o dielo.</p>
+
+        <h2>5. Vaše Práva s ohľadom na GDPR</h2>
+        <p>Ako dotknutá osoba máte plné právo:</p>
+        <ul>
+            <li>Požadovať prístup k vašim osobným údajom.</li>
+            <li>Požadovať opravu alebo vymazanie osobných údajov (právo na zabudnutie).</li>
+            <li>Požadovať obmedzenie spracúvania osobných údajov.</li>
+            <li>Namietať proti spracúvaniu osobných údajov.</li>
+            <li>Podať sťažnosť na Úrad na ochranu osobných údajov SR.</li>
+        </ul>
+
+        <h2>6. Technická Bezpečnosť</h2>
+        <p>Naše databázové riešenia (SQLite) sú prevádzkované na šifrovaných lokálnych diskoch s prísnym obmedzením sieťových portov prostredníctvom UFW firewallu a bez prístupu neoprávnených tretích strán.</p>
+        <p>Ak máte akékoľvek otázky týkajúce sa GDPR, neváhajte kontaktovať nášho úradníka pre ochranu osobných údajov na adrese: <a href="mailto:mstancik@novis.eu" class="neon-link">mstancik@novis.eu</a>.</p>
+    </div>
+</section>
+{{end}}

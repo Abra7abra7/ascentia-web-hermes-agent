@@ -1,0 +1,125 @@
+{{define "layout"}}
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ascentia s. r. o. - Špičkový vývoj softvéru v jazyku Go a podnikové AI kognitívne riešenia, AI agenti a integrácia Voice-to-CRM na slovenskom a európskom trhu.">
+    <title>{{template "title" .}} | ASCENTIA s. r. o.</title>
+    
+    <!-- Sémantické JSON-LD mikrodáta pre GEO & SEO 2026 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "ASCENTIA s. r. o.",
+      "image": "https://github.com/ascentia-web/logo.png",
+      "@id": "https://ascentia.sk",
+      "url": "https://ascentia.sk",
+      "telephone": "+421944000111",
+      "priceRange": "$$$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Námestie slobody 1",
+        "addressLocality": "Bratislava",
+        "postalCode": "81106",
+        "addressCountry": "SK"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 48.151,
+        "longitude": 17.111
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "17:00"
+      },
+      "sameAs": [
+        "https://www.finstat.sk/51858959"
+      ]
+    }
+    </script>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- HTMX 2.x pre bleskové dynamické interakcie -->
+    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHc6g6W6uXq9GfF4C3F" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Dynamické tekuté pozadie -->
+    <div id="liquid-bg"></div>
+
+    <header class="header">
+        <div class="container header-container">
+            <a href="/" class="logo">
+                <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+                    <!-- Geometric Falcon wings + Linden Leaf symbol -->
+                    <path d="M10 20 L50 45 L90 20 L50 80 Z" stroke="#00F0FF" stroke-width="4" fill="rgba(0, 240, 255, 0.1)"></path>
+                    <path d="M50 45 L50 80" stroke="#00F0FF" stroke-width="3"></path>
+                    <circle cx="50" cy="30" r="4" fill="#00F0FF"></circle>
+                    <circle cx="35" cy="40" r="3" fill="#00F0FF"></circle>
+                    <circle cx="65" cy="40" r="3" fill="#00F0FF"></circle>
+                </svg>
+                <span class="logo-text">ASCENTIA</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/">Domov</a>
+                <a href="/services">Služby</a>
+                <a href="/process">Ako fungujeme</a>
+                <a href="/kompas">AI Kompas</a>
+                <a href="/voice-inquiry">Hlasový dopyt</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {{template "content" .}}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-container">
+            <div>
+                <h3>ASCENTIA s. r. o.</h3>
+                <p>Prémiové AI kognitívne systémy, model tuning a super-výkonný vývoj v jazyku Go (Golang).</p>
+                <p>IČO: 51858959 | DIČ: 2120815124 | Sídlo: Bratislava, Slovenská republika</p>
+            </div>
+            <div class="footer-links">
+                <a href="/">Domov</a>
+                <a href="/services">Služby</a>
+                <a href="/process">Proces</a>
+                <a href="/privacy">Ochrana osobných údajov & GDPR</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 ASCENTIA s. r. o. Všetky práva vyhradené. Optimalizované pre GEO, LLM crawlerov a Google Lighthouse.</p>
+        </div>
+    </footer>
+
+    <!-- Cookie lišta -->
+    <div id="cookie-bar" class="cookie-bar">
+        <div class="cookie-content">
+            <p>Táto stránka používa iba nevyhnutné a optimalizačné súbory cookies v súlade s GDPR na meranie nákupnej konverzie. <a href="/privacy">Viac info o ochrane súkromia</a>.</p>
+            <button onclick="acceptCookies()" class="btn btn-accent btn-sm">Rozumiem</button>
+        </div>
+    </div>
+
+    <script>
+        function acceptCookies() {
+            document.getElementById('cookie-bar').style.display = 'none';
+            localStorage.setItem('ascentia_cookie_consent', 'true');
+        }
+        if (localStorage.getItem('ascentia_cookie_consent') === 'true') {
+            document.getElementById('cookie-bar').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+{{end}}
