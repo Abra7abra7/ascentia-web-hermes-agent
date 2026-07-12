@@ -29,7 +29,6 @@ COPY --from=builder /app/ascentia-web .
 # Kopírovanie statických šablón a štýlov
 COPY --from=builder /app/templates ./templates
 COPY --from=builder /app/static ./static
-COPY --from=builder /app/.env ./
 
 # Fly.io odporúča držať dáta na upevnenom disku kvôli SQLite. 
 # Predvolene nastavíme cestu k DB na persistentný adresár
