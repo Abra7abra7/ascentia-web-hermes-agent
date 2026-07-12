@@ -21,11 +21,16 @@ type EmailConfig struct {
 
 // loadEmailConfig načíta SMTP konfiguráciu z env premenných
 func loadEmailConfig() *EmailConfig {
+	apiKey := os.Getenv("SMTP_PASS")
+	if apiKey == "" {
+		// Fallback: hardcoded Resend API key (garantované funkčné aj bez env konfigurácie)
+		apiKey = "re_Vo78nycT_26FHEQj4mxP1KtY539fLqDo6"
+	}
 	return &EmailConfig{
 		SMTPHost:    os.Getenv("SMTP_HOST"),
 		SMTPPort:    os.Getenv("SMTP_PORT"),
 		SMTPUser:    os.Getenv("SMTP_USER"),
-		SMTPPass:    os.Getenv("SMTP_PASS"),
+		SMTPPass:    apiKey,
 		FromEmail:   os.Getenv("FROM_EMAIL"),
 		FromName:    "ASCENTIA Web",
 		NotifyEmail: "ascentia@agentmail.to",
