@@ -4,9 +4,8 @@ import (
 	"database/sql"
 	"html/template"
 	"net/http"
-	"os"
-	"path/filepath"
 	"ascentia-web/ai"
+	"ascentia-web/assets"
 )
 
 type Server struct {
@@ -18,14 +17,25 @@ type Server struct {
 func NewServer(db *sql.DB, aiProvider ai.Provider) (*Server, error) {
 	templates := make(map[string]*template.Template)
 
-	// Načítame layout ako základ pre všetky stránky
-	layoutPath := filepath.Join("templates", "layout.html")
+	// Načítame layout z embedded FS
+	layoutBytes, err := assets.GetTemplateFS().ReadFile("layout.html")
+	if err != nil {
+		return nil, err
+	}
+	layoutStr := string(layoutBytes)
 
-	// Parzneme každú stránku samostatne s layoutom, aby sa predišlo kolízii define blokov
+	// Parzneme každú stránku samostatne s layoutom
 	pages := []string{"dashboard", "services", "process", "privacy", "kompas", "voice", "faq", "consultation", "blog", "blog_go_pre_enterprise", "blog_ai_pravnikom", "blog_voice_crm_case", "pricing"}
 	for _, page := range pages {
-		pagePath := filepath.Join("templates", page+".html")
-		tmpl, err := template.New("layout").ParseFiles(layoutPath, pagePath)
+		pageBytes, err := assets.GetTemplateFS().ReadFile("templates/" + page + ".html")
+		if err != nil {
+			return nil, err
+		}
+		tmpl, err := template.New("layout").Parse(layoutStr)
+		if err != nil {
+			return nil, err
+		}
+		_, err = tmpl.Parse(string(pageBytes))
 		if err != nil {
 			return nil, err
 		}
@@ -106,24 +116,34 @@ func (s *Server) RenderTemplate(w http.ResponseWriter, r *http.Request, name str
 	s.renderTemplate(w, r, name, nil)
 }
 
-// HandleStatic servuje statické súbory (CSS, JS, obrázky)
+// HandleStatic servuje statické súbory z embedded FS
 func (s *Server) HandleStatic(w http.ResponseWriter, r *http.Request) {
-	// Bezpečnostná kontrola: zamedzenie directory traversal
-	cleanPath := filepath.Clean(r.URL.Path)
+	cleanPath := r.URL.Path
 	if cleanPath == "" || cleanPath == "/" {
 		http.NotFound(w, r)
 		return
 	}
 
-	// Servujeme z static adresára
-	staticDir := "static"
-	filePath := filepath.Join(staticDir, cleanPath)
-
-	// Overíme, či súbor existuje
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+	// Slúžime z embedded static FS
+	data, err := assets.StaticFile(cleanPath)
+	if err != nil {
 		http.NotFound(w, r)
 		return
 	}
 
-	http.ServeFile(w, r, filePath)
+	// Nastav content type podľa prípony
+	switch {
+	case len(cleanPath) > 4 && cleanPath[len(cleanPath)-4:] == ".css":
+		w.Header().Set("Content-Type", "text/css; charset=utf-8")
+	case len(cleanPath) > 4 && cleanPath[len(cleanPath)-4:] == ".svg":
+		w.Header().Set("Content-Type", "image/svg+xml")
+	case len(cleanPath) > 5 && cleanPath[len(cleanPath)-5:] == ".xml":
+		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+	case len(cleanPath) > 4 && cleanPath[len(cleanPath)-4:] == ".txt":
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	default:
+		w.Header().Set("Content-Type", "application/octet-stream")
+	}
+
+	w.Write(data)
 }

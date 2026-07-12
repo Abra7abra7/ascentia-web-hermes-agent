@@ -1,0 +1,8 @@
+cmd/
+docs/
+.github/
+.agents/
+fly.toml
+Dockerfile
+*.md
+!README.md

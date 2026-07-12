@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "buildCommand": "go build -o .vercel/output ./...",
+  "installCommand": "echo 'skip'",
+  "functions": {
+    "api/index.go": {
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    { "src": "/static/(.*)", "dest": "/api/index.go" },
+    { "src": "/api/(.*)", "dest": "/api/index.go" },
+    { "src": "/(.*)", "dest": "/api/index.go" }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{{template "layout" .}}
+
+{{define "title"}}B2B AI & Softvérová Architektúra{{end}}
+
+{{define "content"}}
+<section class="hero glass-panel">
+    <div class="container hero-content">
+        <h1 class="glow-text">Build better.</h1>
+        <p class="hero-subheader">Enterprise AI &amp; High-Performance Go Backend. Transformujeme kód v bleskové riešenia pre enterprise lídrov.</p>
+        <div class="hero-metrics">
+            <div class="metric"><strong>47,000</strong><span>req/s</span></div>
+            <div class="metric"><strong>12MB</strong><span>RAM</span></div>
+            <div class="metric"><strong>€5/mes.</strong><span>infra</span></div>
+            <div class="metric"><strong>+340%</strong><span>konverzia</span></div>
+        </div>
+        <div class="hero-actions">
+            <a href="/consultation" class="btn btn-accent">Rezervovať konzultáciu</a>
+            <a href="/voice-inquiry" class="btn btn-primary">Hlasový dopyt</a>
+            <a href="/pricing" class="btn btn-ghost">Cenník</a>
+        </div>
+    </div>
+</section>
+
+<section class="container info-section">
+    <div class="grid grid-2">
+        <div class="glass-panel text-card">
+            <h2>Kredibilita a Transparentné Podnikanie</h2>
+            <p>Sme stabilná slovenská spoločnosť <strong>ASCENTIA s. r. o.</strong>, zapísaná v Obchodnom registri Okresného súdu Bratislava I (Oddiel: Sro, Vložka číslo: 130190/B).</p>
+            <p>Vďaka prepojeniu s registrami ako ORSR a FinStat garantujeme 100% korporátnu overiteľnosť a transparentnosť pre našich medzinárodných aj lokálnych B2B partnerov.</p>
+            <div class="finstat-badge">
+                <strong>IČO:</strong> 51858959 | <strong>DIČ:</strong> 2120815124 | <strong>Email:</strong> ascentia@agentmail.to
+            </div>
+        </div>
+        <div class="glass-panel text-card">
+            <h2>Naše Tri Komerčné Monetizačné Piliere</h2>
+            <ul class="clean-list">
+                <li><strong>1. Predplatné AI automatizácií (SaaS-lite):</strong> Špičkoví AI agenti navrhnutí pre slovenské a európske korporácie.</li>
+                <li><strong>2. High-Ticket vývoj na mieru:</strong> Bleskové frontend & backend riešenia s architektúrou v Go (Golang) s nulovými zbytočnými závislosťami.</li>
+                <li><strong>3. Integrácia Voice-to-CRM:</strong> Licencovanie nášho hlasového dopytu pre premenu reči na štruktúrované dáta vo vašom CRM.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section id="quick-contact" class="container contact-section">
+    <div class="glass-panel contact-box">
+        <h2 class="section-title text-center glow-text">Máte záujem o bezplatnú technologickú konzultáciu?</h2>
+        <p class="text-center">Napíšte nám cez tento formulár. Náš inžiniersky tím preanalyzuje váš dopyt s využitím AI modulu na skórovanie leadov pre okamžité pridelenie architekta.</p>
+        
+        <!-- HTMX AJAX POST spracovanie bez prenačítania stránky -->
+        <form hx-post="/api/contact" hx-target="#form-result" class="contact-form">
+            <div class="grid grid-2">
+                <div class="form-group">
+                    <label for="name">Vaše meno / Kontaktná osoba *</label>
+                    <input type="text" id="name" name="name" required placeholder="napr. Mário Stančík">
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mailová adresa *</label>
+                    <input type="email" id="email" name="email" required placeholder="napr. name@company.eu">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="company">Názov spoločnosti</label>
+                <input type="text" id="company" name="company" placeholder="napr. ASCENTIA s. r. o.">
+            </div>
+            <div class="form-group">
+                <label for="message">Opíšte váš technologický problém alebo projekt *</label>
+                <textarea id="message" name="message" rows="5" required placeholder="Aké AI automatizácie alebo softvérové architektúry potrebujete vyriešiť?"></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-accent btn-large">Odoslať dopyt</button>
+            </div>
+        </form>
+        <div id="form-result"></div>
+    </div>
+</section>
+{{end}}

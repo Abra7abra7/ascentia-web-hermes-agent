@@ -1,0 +1,109 @@
+{{template "layout" .}}
+
+{{define "title"}}AI Kompas Copilot Showcase{{end}}
+
+{{define "content"}}
+<section class="container kompas-header text-center">
+    <h1 class="glow-text">AI Kompas - Kognitívna Návnada</h1>
+    <p class="subheader">Zažite výnimočnú rýchlosť a technologickú precíznosť nášho lokálneho AI Engine-u v reálnom čase.</p>
+</section>
+
+<section class="container chat-container">
+    <div class="grid grid-3">
+        <!-- Bočný panel informácií pre bota -->
+        <div class="glass-panel chat-info-panel col-1">
+            <h3>Technologická konfigurácia</h3>
+            <p>Tento modul demonštruje pre enterprise klientelu technológiu <strong>Server-Sent Events (SSE)</strong> prenosu dát po slovách cez čisté rozhranie standard library v Go.</p>
+            <div class="tech-specs-box">
+                <div><strong>Frontend:</strong> HTMX v2 (Server push)</div>
+                <div><strong>Backend:</strong> Net/HTTP (Go standard mux)</div>
+                <div><strong>Konektor:</strong> ai.Provider Interface</div>
+                <div><strong>Datastore:</strong> SQLite table <code>chat_messages</code></div>
+            </div>
+            <p class="small-text-muted">Interakcia je odľahčená a optimalizovaná pre mobilné zariadenia aj pomalé rádiové siete u korporátnych zákazníkov.</p>
+        </div>
+
+        <!-- Hlavné Chatovacie rozhranie -->
+        <div class="glass-panel chat-main-box col-2">
+            <div id="chat-messages" class="chat-messages-area">
+                <div class="msg-box system">
+                    <strong>AI Copilot:</strong> Vitajte! Ja som kognitívny sprievodca spoločnosti Ascentia. Zaujíma vás rýchlosť našich riešení, implementácia onsite modelov pre citlivé dáta, alebo integrácia s platformami ako Salesforce, Hubspot či Make? Opýtajte sa ma čokoľvek.
+                </div>
+            </div>
+            
+            <div class="chat-input-area animate-fade">
+                <!-- Javascript asistent spracujúci SSE streamovanie s HTMX kompatibilitou -->
+                <form id="chat-form" class="chat-form-row" onsubmit="submitChatForm(event)">
+                    <input type="text" id="chat-input-prompt" placeholder="Zadajte svoju otázku (napr. Aká je garantovaná rýchlosť backendov v Go?)..." required autocomplete="off">
+                    <button type="submit" class="btn btn-accent btn-sm">Odoslať</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const chatContainer = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input-prompt');
+    const sessionID = 'session_' + Math.random().toString(36).substring(2, 9);
+
+    function submitChatForm(event) {
+        event.preventDefault();
+        const prompt = chatInput.value.trim();
+        if (!prompt) return;
+
+        // Pridanie správy usera do vizuálu
+        const userDiv = document.createElement('div');
+        userDiv.className = 'msg-box user';
+        userDiv.innerHTML = '<strong>Vy:</strong> ' + escapeHTML(prompt);
+        chatContainer.appendChild(userDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Vyčistenie a zablokovanie prompt inputu
+        chatInput.value = '';
+        chatInput.disabled = true;
+
+        // Vytvorenie kontajneru pre prichádzajúcu AI SSE odpoveď
+        const assistantDiv = document.createElement('div');
+        assistantDiv.className = 'msg-box assistant';
+        assistantDiv.innerHTML = '<strong>Ascentia Copilot:</strong> <span class="assistant-text"></span>';
+        chatContainer.appendChild(assistantDiv);
+        const textSpan = assistantDiv.querySelector('.assistant-text');
+
+        // Pripojenie na SSE endpoint servera v Go
+        const eventSource = new EventSource('/api/stream?prompt=' + encodeURIComponent(prompt) + '&session_id=' + sessionID);
+
+        eventSource.onmessage = function(event) {
+            if (event.data === '[DONE]') {
+                eventSource.close();
+                chatInput.disabled = false;
+                chatInput.focus();
+                return;
+            }
+            // Spracovanie prijatého slova a vloženie ho k existujúcemu streamu
+            textSpan.innerHTML += event.data + ' ';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+
+        eventSource.onerror = function() {
+            eventSource.close();
+            chatInput.disabled = false;
+            if (textSpan.innerHTML === '') {
+                textSpan.innerHTML = 'Pripojenie k serveru zlyhalo. Skontrolujte prosím, či váš Go server beží na porte 8080.';
+            }
+        };
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+</script>
+{{end}}
