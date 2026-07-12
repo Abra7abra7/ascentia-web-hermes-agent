@@ -15,7 +15,7 @@ func (s *Server) RunFollowUpCheck() {
 		       ls.score, ls.budget, ls.urgency
 		FROM contact_inquiries ci
 		LEFT JOIN lead_scores ls ON ls.inquiry_id = ci.id
-		WHERE ci.created_at < datetime('now', '-24 hours')
+		WHERE ci.created_at < datetime('now', '-1 minute')
 		  AND ci.follow_up_sent = 0
 		ORDER BY ci.created_at ASC
 		LIMIT 10
@@ -120,11 +120,11 @@ func sendFollowUpEmail(name, email, analysis, urgency string) {
 
 // StartFollowUpScheduler spustí periodickú kontrolu každú hodinu
 func (s *Server) StartFollowUpScheduler() {
-	ticker := time.NewTicker(1 * time.Hour)
+	ticker := time.NewTicker(2 * time.Minute)
 
 	go func() {
-		// Prvotný check po 5 minútach od štartu
-		time.Sleep(5 * time.Minute)
+		// Prvotný check po 30 sekundách od štartu (pre testovanie)
+		time.Sleep(30 * time.Second)
 		s.RunFollowUpCheck()
 
 		for {
