@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"fmt"
-	"net/smtp"
+	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 // EmailConfig drží SMTP konfiguráciu z environment premenných
@@ -36,32 +37,38 @@ func (c *EmailConfig) IsEmailConfigured() bool {
 	return c.SMTPHost != "" && c.SMTPUser != "" && c.SMTPPass != ""
 }
 
-// sendEmail odošle email cez SMTP
+// sendEmail odošle email cez Resend REST API (bez potreby SMTP)
 func sendEmail(config *EmailConfig, to, subject, body string) error {
-	if !config.IsEmailConfigured() {
-		// SMTP nie je nakonfigurované — len logneme
-		fmt.Printf("[EMAIL SKIP] SMTP not configured. To: %s | Subject: %s\n", to, subject)
+	if config.SMTPPass == "" {
+		fmt.Printf("[EMAIL SKIP] No API key configured. To: %s | Subject: %s\n", to, subject)
 		return nil
 	}
 
-	from := config.FromEmail
-	if from == "" {
-		from = config.SMTPUser
-	}
+	// Resend REST API
+	payload := fmt.Sprintf(`{"from":"ASCENTIA Web <ascentia@agentmail.to>","to":["%s"],"subject":%q,"text":%q}`,
+		to, subject, body)
 
-	msg := fmt.Sprintf("From: %s <%s>\r\nTo: %s\r\nSubject: %s\r\nMIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n\r\n%s",
-		config.FromName, from, to, subject, body)
-
-	auth := smtp.PlainAuth("", config.SMTPUser, config.SMTPPass, config.SMTPHost)
-	addr := fmt.Sprintf("%s:%s", config.SMTPHost, config.SMTPPort)
-
-	err := smtp.SendMail(addr, auth, from, []string{to}, []byte(msg))
+	req, err := http.NewRequest("POST", "https://api.resend.com/emails", strings.NewReader(payload))
 	if err != nil {
-		fmt.Printf("[EMAIL ERROR] Failed to send to %s: %v\n", to, err)
 		return err
 	}
+	req.Header.Set("Authorization", "Bearer "+config.SMTPPass)
+	req.Header.Set("Content-Type", "application/json")
 
-	fmt.Printf("[EMAIL SENT] To: %s | Subject: %s\n", to, subject)
+	client := &http.Client{Timeout: 10 * time.Second}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Printf("[EMAIL ERROR] Resend API failed: %v\n", err)
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		fmt.Printf("[EMAIL SENT] To: %s | Subject: %s | Status: %d\n", to, subject, resp.StatusCode)
+	} else {
+		fmt.Printf("[EMAIL ERROR] Resend returned %d\n", resp.StatusCode)
+	}
+
 	return nil
 }
 
