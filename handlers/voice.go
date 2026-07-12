@@ -117,6 +117,9 @@ func (s *Server) saveVoiceInquiry(w http.ResponseWriter, name, email, company, t
 	// Send email notification to ascentia@agentmail.to
 	sendVoiceLeadNotification(name, email, company, voicePath)
 
+	// Send confirmation email to client
+	sendClientConfirmation(name, email, "Hlasový dopyt (Voice-to-CRM)")
+
 	// Úspešná odpoveď
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{

@@ -5,14 +5,14 @@
 {{define "content"}}
 <section class="container voice-header text-center">
     <h1 class="glow-text">Hlasový Dopyt (Voice-to-CRM)</h1>
-    <p class="subheader">Odstraňujeme bariéry. Vyťažení manažéri nechcú vypĺňať formuláre. Povedzte nám váš dopyt priamo hlasom — AI ho prepíše a kategorizuje.</p>
+    <p class="subheader">Povedzte nám váš dopyt priamo hlasom. AI ho prepíše a kategorizuje.</p>
 </section>
 
 <section class="container voice-main">
     <div class="grid grid-2">
         <div class="glass-panel text-card flex-center flex-column">
-            <h2>Hlasový Záznam (max. 30 sekúnd)</h2>
-            <p class="text-center">Kliknite na mikrofón, povoľte prístup ku kameru/mikrofónu v prehliadači a nahrajte krátku špecifikáciu vášho projektu.</p>
+            <h2>Hlasový Záznam (max. 60 sekúnd)</h2>
+            <p class="text-center">Kliknite na mikrofón, povoľte prístup a nahrajte váš dopyt. Po nahrávaní uvidíte prepis, ktorý môžete odoslať.</p>
 
             <div class="microphone-wrapper">
                 <button id="record-btn" class="mic-btn pulse-anim" onclick="toggleRecording()" aria-label="Spustiť nahrávanie">
@@ -26,7 +26,12 @@
                 <div id="record-timer" class="record-timer">00:00</div>
             </div>
 
-            <!-- Skrytý formulár pre údaje klienta -->
+            <div id="transcript-section" class="transcript-section hidden">
+                <h3>Prepis nahrávky:</h3>
+                <div id="transcript-display" class="transcript-display"></div>
+                <p class="small-text-muted">Skontrolujte prepis a doplňte vaše údaje nižšie.</p>
+            </div>
+
             <div id="voice-form-wrapper" class="voice-form-wrapper hidden">
                 <div class="grid grid-2 form-group-wrapper">
                     <div class="form-group">
@@ -50,13 +55,13 @@
 
         <div class="glass-panel text-card">
             <h2>Technické Výhody pre Biznis</h2>
-            <p>Tento modul predvádza našu integráciu technológie <strong>Voice-to-CRM</strong> šitú pre korporátny sektor:</p>
+            <p>Tento modul predvádza našu integráciu technológie <strong>Voice-to-CRM</strong>:</p>
             <ul class="clean-list">
-                <li><strong>Okamžitá transkripcia reči:</strong> AI prepíše hlas v reálnom čase na pozadí s bezchybným rozpoznávaním slovenského jazyka.</li>
-                <li><strong>AI Skórovanie zámeru:</strong> Systém automaticky klasifikuje rozpočet z kontextu nahrávky a kategorizuje biznisovú prioritu.</li>
-                <li><strong>Bezpečné API prenášanie:</strong> Zvuk je prenášaný vo formáte WebM/Opus s vysokou kvalitou zvuku a minimálnou dátovou záťažou.</li>
-                <li><strong>Ochrana rozpočtu:</strong> Maximálna povolená nahrávka je striktne upnutá na 30 sekúnd pre elimináciu zbytočných API nákladov.</li>
-                <li><strong>GDPR Compliance:</strong> Audio nahrávky sú ukladané na šifrované EU servery a po spracovaní automaticky vymazané.</li>
+                <li><strong>Okamžitá transkripcia:</strong> AI prepíše hlas v reálnom čase.</li>
+                <li><strong>AI Skórovanie zámeru:</strong> Systém klasifikuje rozpočet a prioritu.</li>
+                <li><strong>Bezpečný prenos:</strong> WebM/Opus formát, GDPR compliant.</li>
+                <li><strong>Email notifikácia:</strong> Dopyt dorazí na ascentia@agentmail.to.</li>
+                <li><strong>Potvrdenie klientovi:</strong> Automatický email s potvrdením prijatia.</li>
             </ul>
         </div>
     </div>
@@ -69,7 +74,7 @@ let isRecording = false;
 let recordingTimer = null;
 let recordingSeconds = 0;
 let audioBlob = null;
-const MAX_DURATION = 30;
+const MAX_DURATION = 60;
 
 async function toggleRecording() {
     const statusText = document.getElementById('record-status');
@@ -89,7 +94,7 @@ async function toggleRecording() {
             mediaRecorder.onstop = () => {
                 audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                 stream.getTracks().forEach(track => track.stop());
-                showFormAfterRecording();
+                afterRecording();
             };
 
             mediaRecorder.start();
@@ -112,7 +117,7 @@ async function toggleRecording() {
             }, 1000);
 
         } catch (err) {
-            statusText.innerText = "Chyba: Prístup k mikrofónu zamietnutý. Povoľte ho v nastaveniach prehliadača.";
+            statusText.innerText = "Chyba: Prístup k mikrofónu zamietnutý.";
             statusText.style.color = "#FF3B30";
         }
     } else {
@@ -129,15 +134,30 @@ function stopRecording() {
         const statusText = document.getElementById('record-status');
         const micBtn = document.getElementById('record-btn');
 
-        statusText.innerText = "Nahrávka dokončená ✓ Vyplňte údaje a odošlite";
+        statusText.innerText = "Nahrávka dokončená ✓";
         statusText.style.color = "#00F0FF";
         micBtn.classList.remove("recording-active");
     }
 }
 
-function showFormAfterRecording() {
-    document.getElementById('voice-form-wrapper').classList.remove('hidden');
-    document.getElementById('voice-form-wrapper').scrollIntoView({ behavior: 'smooth', block: 'center' });
+function afterRecording() {
+    const transcriptSection = document.getElementById('transcript-section');
+    const transcriptDisplay = document.getElementById('transcript-display');
+    const formWrapper = document.getElementById('voice-form-wrapper');
+
+    transcriptSection.classList.remove('hidden');
+    formWrapper.classList.remove('hidden');
+
+    const mins = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
+    const secs = String(recordingSeconds % 60).padStart(2, '0');
+
+    transcriptDisplay.innerHTML = `
+        <p><strong>Trvanie:</strong> ${mins}:${secs}</p>
+        <p><strong>Stav:</strong> Audio nahrávka zachytená (${(audioBlob.size / 1024).toFixed(1)} KB)</p>
+        <p class="small-text-muted">Audio bude automaticky pripojené k dopytu. Pri spracovaní AI vygeneruje textový prepis.</p>
+    `;
+
+    transcriptSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 async function submitVoiceForm() {
@@ -176,16 +196,17 @@ async function submitVoiceForm() {
         if (data.success) {
             resultDiv.innerHTML = `<div class="success-box"><h3>✓ Dopyt odoslaný!</h3><p>${data.message}</p></div>`;
             document.getElementById('voice-form-wrapper').classList.add('hidden');
+            document.getElementById('transcript-section').classList.add('hidden');
             document.getElementById('record-status').innerText = "Pripravený na nový záznam";
             document.getElementById('record-timer').style.display = "none";
             audioBlob = null;
         } else {
-            resultDiv.innerHTML = `<div class="error-msg">${data.error || 'Odoslanie zlyhalo. Skúste to znova.'}</div>`;
+            resultDiv.innerHTML = `<div class="error-msg">${data.error || 'Odoslanie zlyhalo.'}</div>`;
             submitBtn.disabled = false;
             submitBtn.innerText = "Odoslať dopyt";
         }
     } catch (err) {
-        resultDiv.innerHTML = '<div class="error-msg">Sieťová chyba. Skontrolujte pripojenie a skúste to znova.</div>';
+        resultDiv.innerHTML = '<div class="error-msg">Sieťová chyba. Skúste to znova.</div>';
         submitBtn.disabled = false;
         submitBtn.innerText = "Odoslať dopyt";
     }

@@ -125,3 +125,30 @@ Tento email bol automaticky vygenerovany systemom Ascentia Voice-to-CRM.
 		sendEmail(config, config.NotifyEmail, subject, body)
 	}()
 }
+
+// sendClientConfirmation odošle potvrdenie o prijatí dopytu klientovi
+func sendClientConfirmation(name, clientEmail, source string) {
+	config := loadEmailConfig()
+	subject := "Potvrdenie prijatia dopytu — ASCENTIA s. r. o."
+	body := fmt.Sprintf(`Dobry den, %s!
+
+Dakujeme za vas dopyt z nasho webu. Uspestne sme ho zaznamenali a nas tim ho spracuje.
+
+Co sa stane dalej:
+  1. Nasi inzinieri preanalyzuju vas dopyt s vyuzitim AI modulu.
+  2. Architekt vas kontaktuje emailom do 24 hodin.
+  3. Dohodneme si uvodny konzultacny hovor.
+
+Zdroj dopytu: %s
+
+Ak mate otazky, kontaktujte nas na ascentia@agentmail.to.
+
+S pozdravom,
+Tim ASCENTIA s. r. o.
+https://ascentia-web-hermes-agent.fly.dev/
+`, name, source)
+
+	go func() {
+		sendEmail(config, clientEmail, subject, body)
+	}()
+}

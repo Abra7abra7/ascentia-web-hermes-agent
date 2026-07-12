@@ -51,6 +51,9 @@ func (s *Server) HandleContactSubmit(w http.ResponseWriter, r *http.Request) {
 	// Send email notification to ascentia@agentmail.to
 	sendLeadNotification(name, email, company, message, "B2B formulár")
 
+	// Send confirmation email to client
+	sendClientConfirmation(name, email, "B2B formulár")
+
 	// Pre HTMX vrátime pekný úspešný fragment, inak zobrazenie správy
 	w.Header().Set("Content-Type", "text/html")
 	w.Write([]byte(fmt.Sprintf(`

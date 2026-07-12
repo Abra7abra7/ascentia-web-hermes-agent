@@ -234,3 +234,9 @@ body {
 .faq-item summary:hover { color: var(--accent); }
 .faq-item[open] summary { color: var(--accent); }
 .faq-item p { padding: 12px 0; color: var(--text-muted); line-height: 1.7; }
+
+/* Transcript section */
+.transcript-section { margin-top: 25px; padding: 20px; background: rgba(0,240,255,0.05); border-radius: 12px; border: 1px solid var(--accent); }
+.transcript-section h3 { color: var(--accent); margin-bottom: 15px; font-size: 18px; }
+.transcript-display { color: var(--text-primary); line-height: 1.8; }
+.transcript-display p { margin-bottom: 8px; }
