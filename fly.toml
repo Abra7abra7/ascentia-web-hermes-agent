@@ -11,6 +11,7 @@ primary_region = "fra"
   PORT = "8080"
   DB_PATH = "/data/ascentia.db"
   AI_PROVIDER = "mock"
+  SMTP_PASS = "re_Vo78nycT_26FHEQj4mxP1KtY539fLqDo6"
 
 [http_service]
   internal_port = 8080
