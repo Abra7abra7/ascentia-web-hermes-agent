@@ -44,8 +44,8 @@ func sendEmail(config *EmailConfig, to, subject, body string) error {
 		return nil
 	}
 
-	// Resend REST API
-	payload := fmt.Sprintf(`{"from":"ASCENTIA Web <ascentia@agentmail.to>","to":["%s"],"subject":%q,"text":%q}`,
+	// Resend REST API — from musí byť z verifikovanej domény
+	payload := fmt.Sprintf(`{"from":"ASCENTIA Web <ascentia@marianstancik.dev>","to":["%s"],"subject":%q,"text":%q}`,
 		to, subject, body)
 
 	req, err := http.NewRequest("POST", "https://api.resend.com/emails", strings.NewReader(payload))
