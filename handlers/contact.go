@@ -39,7 +39,7 @@ func (s *Server) HandleContactSubmit(w http.ResponseWriter, r *http.Request) {
 
 	inquiryID, _ := res.LastInsertId()
 
-	// Qualify Lead via AI asynchronously to keep server response ultra-fast
+	// Qualify Lead via AI asynchronously + send email notification
 	go func(id int64, text string) {
 		score, err := s.AI.QualifyLead(context.Background(), text)
 		if err == nil {
@@ -47,6 +47,9 @@ func (s *Server) HandleContactSubmit(w http.ResponseWriter, r *http.Request) {
 				id, score.Score, score.Budget, score.Urgency, score.CompanySize, score.Summary)
 		}
 	}(inquiryID, fmt.Sprintf("%s. Spoločnosť: %s. Správa: %s", name, company, message))
+
+	// Send email notification to ascentia@agentmail.to
+	sendLeadNotification(name, email, company, message, "B2B formulár")
 
 	// Pre HTMX vrátime pekný úspešný fragment, inak zobrazenie správy
 	w.Header().Set("Content-Type", "text/html")

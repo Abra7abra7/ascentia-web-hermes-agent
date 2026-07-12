@@ -114,6 +114,9 @@ func (s *Server) saveVoiceInquiry(w http.ResponseWriter, name, email, company, t
 		}
 	}(inquiryID, fmt.Sprintf("%s. Spoločnosť: %s. Správa: %s", name, company, transcript))
 
+	// Send email notification to ascentia@agentmail.to
+	sendVoiceLeadNotification(name, email, company, voicePath)
+
 	// Úspešná odpoveď
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]interface{}{
