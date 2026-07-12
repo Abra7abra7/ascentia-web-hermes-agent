@@ -79,6 +79,18 @@ func main() {
 	mux.HandleFunc("/kompas", server.HandleKompas)
 	mux.HandleFunc("/voice-inquiry", server.HandleVoice)
 	mux.HandleFunc("/faq", server.HandleFAQ)
+	mux.HandleFunc("/consultation", server.HandleConsultation)
+	mux.HandleFunc("/blog", server.HandleBlog)
+	mux.HandleFunc("/pricing", server.HandlePricing)
+	mux.HandleFunc("/blog/go-pre-enterprise", func(w http.ResponseWriter, r *http.Request) {
+		server.RenderTemplate(w, r, "blog_go_pre_enterprise")
+	})
+	mux.HandleFunc("/blog/ai-automatizacia-pravnikom", func(w http.ResponseWriter, r *http.Request) {
+		server.RenderTemplate(w, r, "blog_ai_pravnikom")
+	})
+	mux.HandleFunc("/blog/voice-to-crm-case-study", func(w http.ResponseWriter, r *http.Request) {
+		server.RenderTemplate(w, r, "blog_voice_crm_case")
+	})
 
 	// POST trasy a zber leadov
 	mux.HandleFunc("/api/contact", server.HandleContactSubmit)

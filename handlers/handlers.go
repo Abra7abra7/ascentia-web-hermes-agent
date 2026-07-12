@@ -22,7 +22,7 @@ func NewServer(db *sql.DB, aiProvider ai.Provider) (*Server, error) {
 	layoutPath := filepath.Join("templates", "layout.html")
 
 	// Parzneme každú stránku samostatne s layoutom, aby sa predišlo kolízii define blokov
-	pages := []string{"dashboard", "services", "process", "privacy", "kompas", "voice", "faq"}
+	pages := []string{"dashboard", "services", "process", "privacy", "kompas", "voice", "faq", "consultation", "blog", "blog_go_pre_enterprise", "blog_ai_pravnikom", "blog_voice_crm_case", "pricing"}
 	for _, page := range pages {
 		pagePath := filepath.Join("templates", page+".html")
 		tmpl, err := template.New("layout").ParseFiles(layoutPath, pagePath)
@@ -72,6 +72,18 @@ func (s *Server) HandleFAQ(w http.ResponseWriter, r *http.Request) {
 	s.renderTemplate(w, r, "faq", nil)
 }
 
+func (s *Server) HandleConsultation(w http.ResponseWriter, r *http.Request) {
+	s.renderTemplate(w, r, "consultation", nil)
+}
+
+func (s *Server) HandleBlog(w http.ResponseWriter, r *http.Request) {
+	s.renderTemplate(w, r, "blog", nil)
+}
+
+func (s *Server) HandlePricing(w http.ResponseWriter, r *http.Request) {
+	s.renderTemplate(w, r, "pricing", nil)
+}
+
 func (s *Server) renderTemplate(w http.ResponseWriter, r *http.Request, name string, data interface{}) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
@@ -87,6 +99,11 @@ func (s *Server) renderTemplate(w http.ResponseWriter, r *http.Request, name str
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+// RenderTemplate je exportovaná verzia pre externé použitie (blog routy)
+func (s *Server) RenderTemplate(w http.ResponseWriter, r *http.Request, name string) {
+	s.renderTemplate(w, r, name, nil)
 }
 
 // HandleStatic servuje statické súbory (CSS, JS, obrázky)

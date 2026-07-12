@@ -1,0 +1,77 @@
+{{template "layout" .}}
+
+{{define "title"}}Rezervácia Konzultácie — Zdarma 30 min{{end}}
+
+{{define "content"}}
+<section class="container consultation-header text-center">
+    <h1 class="glow-text">Rezervujte si Konzultáciu</h1>
+    <p class="subheader">30-minútová bezplatná technická konzultácia. Pripravíme vám predbežnú AI analýzu vášho projektu a navrhneme riešenie.</p>
+</section>
+
+<section class="container consultation-main">
+    <div class="grid grid-2">
+        <div class="glass-panel text-card">
+            <h2>Čo získate na konzultácii?</h2>
+            <ul class="clean-list">
+                <li><strong>AI analýza vášho projektu</strong> — Prejdeme si vaše požiadavky a identifikujeme technické riziká.</li>
+                <li><strong>Architektonický návrh</strong> — High-level dizajn v Go (Golang) s AI integráciou šitou na mieru.</li>
+                <li><strong>Odhad cien a termínov</strong> — Transparentná cenová ponuka bez skrytých poplatkov.</li>
+                <li><strong>TDD stratégia</strong> — Plán vývoja s Test-Driven Development pre garantovanú kvalitu.</li>
+                <li><strong>GDPR audit</strong> — Bezplatné zhodnotenie súladu s európskym právom.</li>
+            </ul>
+            <div class="consultation-badge">
+                <p class="text-center"><strong>100% zadarmo</strong> — žiadny záväzok, žiadny upsell.</p>
+            </div>
+        </div>
+
+        <div class="glass-panel text-card">
+            <h2>Vyberte si termín</h2>
+            <p class="text-center">Vyberte si dostupný termín priamo z kalendára nižšie. Po rezervácii dostanete potvrdenie emailom.</p>
+
+            <!-- Cal.com Embed -->
+            <div class="cal-embed-wrapper">
+                <iframe
+                    src="https://cal.com/ascentia/30min"
+                    frameborder="0"
+                    scrolling="yes"
+                    loading="lazy"
+                    style="width: 100%; height: 600px; border: none; border-radius: 12px; background: rgba(10,25,47,0.6);"
+                    title="Rezervácia konzultácie — ASCENTIA">
+                </iframe>
+            </div>
+
+            <p class="small-text-muted text-center">Preferujete email? Napíšte nám na <a href="mailto:ascentia@agentmail.to" class="neon-link">ascentia@agentmail.to</a></p>
+
+            <div class="consultation-cta">
+                <a href="/kompas" class="btn btn-primary">Skúsiť AI Kompas zdarma</a>
+                <a href="/voice-inquiry" class="btn btn-accent">Poslať hlasový dopyt</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JSON-LD: Service schema pre konzultáciu -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Bezplatná technická konzultácia — ASCENTIA s. r. o.",
+  "provider": {
+    "@type": "Organization",
+    "name": "ASCENTIA s. r. o.",
+    "email": "ascentia@agentmail.to"
+  },
+  "description": "30-minútová bezplatná technická konzultácia. AI analýza projektu, architektonický návrh v Go, odhad cien a termínov, GDPR audit.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "EUR",
+    "availability": "https://schema.org/InStock"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Slovakia"
+  }
+}
+</script>
+{{end}}
