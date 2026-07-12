@@ -61,6 +61,9 @@ func main() {
 		log.Fatalf("Chyba pri zostavovaní HTTP servera: %v", err)
 	}
 
+	// Štart automatizovaného follow-up schedulera (kontroluje dopyty staršie ako 24h)
+	server.StartFollowUpScheduler()
+
 	// Definícia prísne optimalizovaných rout
 	mux := http.NewServeMux()
 

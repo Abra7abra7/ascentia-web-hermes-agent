@@ -34,6 +34,7 @@ func InitDB(dbPath string) (*sql.DB, error) {
 			company TEXT DEFAULT '',
 			message TEXT NOT NULL,
 			voice_path TEXT DEFAULT '',
+			follow_up_sent INTEGER DEFAULT 0,
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 		);`,
 		`CREATE TABLE IF NOT EXISTS lead_scores (
@@ -56,6 +57,9 @@ func InitDB(dbPath string) (*sql.DB, error) {
 			return nil, fmt.Errorf("failed to execute tables creation schema: %w", err)
 		}
 	}
+
+	// Migrácia: pridaj follow_up_sent stĺpec ak neexistuje (pre existujúce databázy)
+	db.Exec("ALTER TABLE contact_inquiries ADD COLUMN follow_up_sent INTEGER DEFAULT 0")
 
 	return db, nil
 }
