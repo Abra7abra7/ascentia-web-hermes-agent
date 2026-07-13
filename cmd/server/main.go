@@ -71,6 +71,14 @@ func main() {
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	// Presmerovanie /robots.txt a /sitemap.xml na statické súbory (SEO/GEO)
+	mux.HandleFunc("/robots.txt", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/robots.txt")
+	})
+	mux.HandleFunc("/sitemap.xml", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "static/sitemap.xml")
+	})
+
 	// Trasy pre jednotlivé stránky
 	mux.HandleFunc("/", server.HandleIndex)
 	mux.HandleFunc("/services", server.HandleServices)

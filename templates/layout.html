@@ -29,13 +29,13 @@
     <link rel="canonical" href="https://ascentia-web-hermes-agent.fly.dev/">
     <title>{{template "title" .}} | ASCENTIA s. r. o.</title>
 
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+    <!-- Google Analytics 4 (ID z env, fallback placeholder) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{.GA4ID}}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-XXXXXXX', { anonymize_ip: true });
+      gtag('config', '{{.GA4ID}}', { anonymize_ip: true });
     </script>
 
     <!-- JSON-LD: Organization -->

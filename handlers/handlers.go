@@ -13,6 +13,12 @@ type Server struct {
 	DB    *sql.DB
 	AI    ai.Provider
 	Templ map[string]*template.Template
+	GA4ID string
+}
+
+// PageData prenáša spoločné premenné do všetkých šablón
+type PageData struct {
+	GA4ID string
 }
 
 func NewServer(db *sql.DB, aiProvider ai.Provider) (*Server, error) {
@@ -36,52 +42,66 @@ func NewServer(db *sql.DB, aiProvider ai.Provider) (*Server, error) {
 		DB:    db,
 		AI:    aiProvider,
 		Templ: templates,
+		GA4ID: getGA4ID(),
 	}, nil
+}
+
+// getGA4ID načíta GA4 ID z env alebo použije placeholder
+func getGA4ID() string {
+	id := os.Getenv("GA4_ID")
+	if id == "" {
+		return "G-XXXXXXX" // placeholder
+	}
+	return id
+}
+
+// pageData vráti spoločné PageData pre všetky šablóny
+func (s *Server) pageData() PageData {
+	return PageData{GA4ID: s.GA4ID}
 }
 
 func (s *Server) HandleIndex(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		// Pre neexistujúce cesty skúsime obslúžiť statické súbory
 		http.NotFound(w, r)
 		return
 	}
-	s.renderTemplate(w, r, "dashboard", nil)
+	s.renderTemplate(w, r, "dashboard", s.pageData())
 }
 
 func (s *Server) HandleServices(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "services", nil)
+	s.renderTemplate(w, r, "services", s.pageData())
 }
 
 func (s *Server) HandleProcess(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "process", nil)
+	s.renderTemplate(w, r, "process", s.pageData())
 }
 
 func (s *Server) HandlePrivacy(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "privacy", nil)
+	s.renderTemplate(w, r, "privacy", s.pageData())
 }
 
 func (s *Server) HandleKompas(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "kompas", nil)
+	s.renderTemplate(w, r, "kompas", s.pageData())
 }
 
 func (s *Server) HandleVoice(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "voice", nil)
+	s.renderTemplate(w, r, "voice", s.pageData())
 }
 
 func (s *Server) HandleFAQ(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "faq", nil)
+	s.renderTemplate(w, r, "faq", s.pageData())
 }
 
 func (s *Server) HandleConsultation(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "consultation", nil)
+	s.renderTemplate(w, r, "consultation", s.pageData())
 }
 
 func (s *Server) HandleBlog(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "blog", nil)
+	s.renderTemplate(w, r, "blog", s.pageData())
 }
 
 func (s *Server) HandlePricing(w http.ResponseWriter, r *http.Request) {
-	s.renderTemplate(w, r, "pricing", nil)
+	s.renderTemplate(w, r, "pricing", s.pageData())
 }
 
 func (s *Server) renderTemplate(w http.ResponseWriter, r *http.Request, name string, data interface{}) {
