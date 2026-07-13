@@ -1,73 +1,160 @@
-{{template "layout" .}}
-
-{{define "title"}}B2B AI & Softvérová Architektúra{{end}}
+{{define "title"}}Enterprise AI & Go Backend | ASCENTIA s. r. o.{{end}}
 
 {{define "content"}}
-<section class="hero glass-panel">
+<!-- Hero sekcia s background obrázkom -->
+<section class="hero-section" style="background-image: url('/static/img/ascentia-hero-bg.jpg');">
+    <div class="hero-overlay"></div>
     <div class="container hero-content">
-        <h1 class="glow-text">Build better.</h1>
-        <p class="hero-subheader">Enterprise AI &amp; High-Performance Go Backend. Transformujeme kód v bleskové riešenia pre enterprise lídrov.</p>
-        <div class="hero-metrics">
-            <div class="metric"><strong>47,000</strong><span>req/s</span></div>
-            <div class="metric"><strong>12MB</strong><span>RAM</span></div>
-            <div class="metric"><strong>€5/mes.</strong><span>infra</span></div>
-            <div class="metric"><strong>+340%</strong><span>konverzia</span></div>
-        </div>
+        <div class="hero-badge">Enterprise AI &middot; Go Backend &middot; Voice-to-CRM</div>
+        <h1 class="hero-title">Build <span class="text-accent">better.</span></h1>
+        <p class="hero-subtitle">Transformujeme kód v bleskové riešenia pre enterprise lídrov. <br>Prémiové AI systémy a high-performance Go backendy.</p>
         <div class="hero-actions">
-            <a href="/consultation" class="btn btn-accent">Rezervovať konzultáciu</a>
-            <a href="/voice-inquiry" class="btn btn-primary">Hlasový dopyt</a>
-            <a href="/pricing" class="btn btn-ghost">Cenník</a>
+            <a href="/consultation" class="btn btn-accent btn-large">Rezervovať konzultáciu</a>
+            <a href="/services" class="btn btn-primary btn-large">Zobraziť služby</a>
         </div>
     </div>
 </section>
 
+<!-- Metriky -->
+<section class="container metrics-section">
+    <div class="metrics-grid">
+        <div class="metric-card glass-panel">
+            <div class="metric-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <strong class="metric-value">47,000</strong>
+            <span class="metric-label">req/s</span>
+            <span class="metric-desc">Výkon Go backendu</span>
+        </div>
+        <div class="metric-card glass-panel">
+            <div class="metric-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+            </div>
+            <strong class="metric-value">12MB</strong>
+            <span class="metric-label">RAM</span>
+            <span class="metric-desc">Minimálna stopa</span>
+        </div>
+        <div class="metric-card glass-panel">
+            <div class="metric-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <strong class="metric-value">€5/mes.</strong>
+            <span class="metric-label">infra</span>
+            <span class="metric-desc">Oproti €400 pri Node.js</span>
+        </div>
+        <div class="metric-card glass-panel">
+            <div class="metric-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            </div>
+            <strong class="metric-value">+340%</strong>
+            <span class="metric-label">konverzia</span>
+            <span class="metric-desc">Voice-to-CRM nárast</span>
+        </div>
+    </div>
+</section>
+
+<!-- Kredibilita + Piliere -->
 <section class="container info-section">
-    <div class="grid grid-2">
-        <div class="glass-panel text-card">
-            <h2>Kredibilita a Transparentné Podnikanie</h2>
-            <p>Sme stabilná slovenská spoločnosť <strong>ASCENTIA s. r. o.</strong>, zapísaná v Obchodnom registri Okresného súdu Bratislava I (Oddiel: Sro, Vložka číslo: 130190/B).</p>
-            <p>Vďaka prepojeniu s registrami ako ORSR a FinStat garantujeme 100% korporátnu overiteľnosť a transparentnosť pre našich medzinárodných aj lokálnych B2B partnerov.</p>
-            <div class="finstat-badge">
-                <strong>IČO:</strong> 51858959 | <strong>DIČ:</strong> 2120815124 | <strong>Email:</strong> ascentia@agentmail.to
+    <div class="section-header">
+        <h2 class="section-title">Prečo <span class="text-accent">ASCENTIA</span>?</h2>
+        <p class="section-desc">Slovenské inžinierstvo, európska kvalita, globálne výkony.</p>
+    </div>
+    <div class="grid grid-3">
+        <div class="glass-panel info-card">
+            <div class="card-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Overená spoločnosť</h3>
+            <p><strong>ASCENTIA s. r. o.</strong> je zapísaná v ORSR Bratislava I (Sro, Vložka 130190/B). Overiteľná cez FinStat a ORSR.</p>
+            <div class="company-badge">
+                <span>IČO: 51858959</span>
+                <span>DIČ: 2120815124</span>
             </div>
         </div>
-        <div class="glass-panel text-card">
-            <h2>Naše Tri Komerčné Monetizačné Piliere</h2>
-            <ul class="clean-list">
-                <li><strong>1. Predplatné AI automatizácií (SaaS-lite):</strong> Špičkoví AI agenti navrhnutí pre slovenské a európske korporácie.</li>
-                <li><strong>2. High-Ticket vývoj na mieru:</strong> Bleskové frontend & backend riešenia s architektúrou v Go (Golang) s nulovými zbytočnými závislosťami.</li>
-                <li><strong>3. Integrácia Voice-to-CRM:</strong> Licencovanie nášho hlasového dopytu pre premenu reči na štruktúrované dáta vo vašom CRM.</li>
-            </ul>
+        <div class="glass-panel info-card">
+            <div class="card-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+            </div>
+            <h3>TDD metodológia</h3>
+            <p>Každý riadok kódu je pokrytý testami. Garantujeme stabilitu, bezpečnosť a auditovateľnosť každého riešenia.</p>
+        </div>
+        <div class="glass-panel info-card">
+            <div class="card-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00F0FF" stroke-width="1.5"><path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/></svg>
+            </div>
+            <h3>EÚ hostované</h3>
+            <p>Plne GDPR compliant. Dáta na šifrovaných serveroch v EÚ (Frankfurt). Žiadne USA cloudy, žiadne riziká.</p>
         </div>
     </div>
 </section>
 
+<!-- Monetizačné piliere -->
+<section class="container pillars-section">
+    <div class="section-header">
+        <h2 class="section-title">Naše <span class="text-accent">služby</span></h2>
+        <p class="section-desc">Tri komerčné piliere pokrývajúce celé spektrum potrieb vašej firmy.</p>
+    </div>
+    <div class="grid grid-3">
+        <div class="glass-panel pillar-card">
+            <div class="pillar-number">01</div>
+            <h3>AI Systém</h3>
+            <p class="pillar-desc">Autonómne AI agenti a CRM integrácia s lead scoringom pre slovenské a európske korporácie.</p>
+            <div class="pillar-price">od €2,000</div>
+            <a href="/pricing" class="btn btn-primary btn-sm">Zistiť viac</a>
+        </div>
+        <div class="glass-panel pillar-card featured">
+            <div class="pillar-badge">Najobľúbenejšie</div>
+            <div class="pillar-number">02</div>
+            <h3>Go Backend</h3>
+            <p class="pillar-desc">High-performance backend s architektúrou v Go, HTMX frontendom a Voice-to-CRM integráciou.</p>
+            <div class="pillar-price">od €8,000</div>
+            <a href="/pricing" class="btn btn-accent btn-sm">Zistiť viac</a>
+        </div>
+        <div class="glass-panel pillar-card">
+            <div class="pillar-number">03</div>
+            <h3>R&D</h3>
+            <p class="pillar-desc">Výskum a vývoj na mieru — hardvér-softvér, AI fine-tuning, prototypy a inovácie.</p>
+            <div class="pillar-price">od €15,000</div>
+            <a href="/pricing" class="btn btn-primary btn-sm">Zistiť viac</a>
+        </div>
+    </div>
+</section>
+
+<!-- Kontaktný formulár -->
 <section id="quick-contact" class="container contact-section">
     <div class="glass-panel contact-box">
-        <h2 class="section-title text-center glow-text">Máte záujem o bezplatnú technologickú konzultáciu?</h2>
-        <p class="text-center">Napíšte nám cez tento formulár. Náš inžiniersky tím preanalyzuje váš dopyt s využitím AI modulu na skórovanie leadov pre okamžité pridelenie architekta.</p>
+        <div class="contact-header">
+            <h2 class="section-title">Bezplatná <span class="text-accent">konzultácia</span></h2>
+            <p>Náš inžiniersky tím preanalyzuje váš projekt s využitím AI modulu na skórovanie leadov a do 24h vám navrhne riešenie.</p>
+        </div>
         
-        <!-- HTMX AJAX POST spracovanie bez prenačítania stránky -->
         <form hx-post="/api/contact" hx-target="#form-result" class="contact-form">
-            <div class="grid grid-2">
+            <div class="form-row">
                 <div class="form-group">
-                    <label for="name">Vaše meno / Kontaktná osoba *</label>
-                    <input type="text" id="name" name="name" required placeholder="napr. Mário Stančík">
+                    <label for="name">Meno *</label>
+                    <input type="text" id="name" name="name" required placeholder="Mário Stančík">
                 </div>
                 <div class="form-group">
-                    <label for="email">E-mailová adresa *</label>
-                    <input type="email" id="email" name="email" required placeholder="napr. name@company.eu">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required placeholder="name@company.eu">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="company">Spoločnosť</label>
+                    <input type="text" id="company" name="company" placeholder="ASCENTIA s. r. o.">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Telefón (voliteľné)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+421 900 000 000">
                 </div>
             </div>
             <div class="form-group">
-                <label for="company">Názov spoločnosti</label>
-                <input type="text" id="company" name="company" placeholder="napr. ASCENTIA s. r. o.">
+                <label for="message">Popis projektu *</label>
+                <textarea id="message" name="message" rows="4" required placeholder="Aké AI automatizácie alebo softvérové riešenia potrebujete?"></textarea>
             </div>
-            <div class="form-group">
-                <label for="message">Opíšte váš technologický problém alebo projekt *</label>
-                <textarea id="message" name="message" rows="5" required placeholder="Aké AI automatizácie alebo softvérové architektúry potrebujete vyriešiť?"></textarea>
-            </div>
-            <div class="text-center">
+            <div class="form-footer">
+                <p class="form-note">Vaše údaje spracúvame v súlade s GDPR. Odoslaním súhlasíte so spracovaním.</p>
                 <button type="submit" class="btn btn-accent btn-large">Odoslať dopyt</button>
             </div>
         </form>
