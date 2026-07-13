@@ -505,10 +505,11 @@ body {
         top: 0; left: 0; right: 0; bottom: 0;
         background: rgba(10,25,47,0.98);
         backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         justify-content: center;
         align-items: center;
         gap: 25px;
-        z-index: 1000;
+        z-index: 10000;
     }
     .nav-links.open { display: flex; }
     .nav-links a { font-size: 20px; }
