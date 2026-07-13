@@ -280,8 +280,39 @@ body {
 }
 
 /* Section spacing */
-.info-section, .pillars-section, .contact-section {
+.info-section, .pillars-section, .showcase-section, .contact-section {
     margin: 100px auto;
+}
+
+/* Brand showcase */
+.showcase-section { margin: 100px auto; }
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+.showcase-card {
+    padding: 12px;
+    text-align: center;
+    overflow: hidden;
+}
+.showcase-card a { display: block; }
+.showcase-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.showcase-card:hover .showcase-img {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(0,240,255,0.15);
+}
+.showcase-label {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--color-muted);
+    font-weight: 500;
 }
 
 /* Buttons — Brand Manual */
@@ -456,8 +487,9 @@ body {
     .form-note { max-width: 100%; }
     .contact-box { padding: 30px 20px; }
     .pillar-card.featured { transform: none; }
-    .pillars-section, .info-section, .contact-section { margin: 60px auto; }
+    .pillars-section, .info-section, .showcase-section, .contact-section { margin: 60px auto; }
     .section-title { font-size: 28px; }
+    .showcase-grid { grid-template-columns: 1fr; }
     .mobile-cta-bar { display: flex; }
     .hero-metrics { gap: 20px; }
     .metric strong { font-size: 24px; }
