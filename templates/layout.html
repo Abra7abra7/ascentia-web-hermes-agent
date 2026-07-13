@@ -119,19 +119,18 @@
             <a href="/" class="logo">
                 <!-- ASCENTIA Logo: A + Upward Chevron (Brand Manual) -->
                 <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
-                    <!-- Geometric A s upward chevron v negative space -->
                     <path d="M10 85 L50 15 L90 85" stroke="#00F0FF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9"/>
                     <path d="M30 58 L50 30 L70 58" stroke="#00F0FF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.6"/>
-                    <!-- Chevron vrchol (apex) -->
                     <circle cx="50" cy="15" r="5" fill="#00F0FF" opacity="0.8"/>
-                    <!-- Glow dots -->
                     <circle cx="50" cy="15" r="2" fill="#00F0FF" opacity="0.3"/>
-                    <!-- Dekorativne geometricke linie -->
                     <path d="M50 15 L50 85" stroke="rgba(0,240,255,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
                 </svg>
                 <span class="logo-text">ASCENTIA</span>
             </a>
-            <nav class="nav-links">
+            <button class="hamburger" id="hamburger-btn" aria-label="Menu" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
+            <nav class="nav-links" id="nav-links">
                 <a href="/">Domov</a>
                 <a href="/services">Služby</a>
                 <a href="/pricing">Cenník</a>
@@ -193,6 +192,27 @@
     </div>
 
     <script>
+        // Hamburger menu toggle
+        function toggleMenu() {
+            const nav = document.getElementById('nav-links');
+            const btn = document.getElementById('hamburger-btn');
+            nav.classList.toggle('open');
+            btn.classList.toggle('active');
+            document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const nav = document.getElementById('nav-links');
+            if (nav) {
+                nav.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        nav.classList.remove('open');
+                        document.getElementById('hamburger-btn').classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+            }
+        });
+
         function acceptCookies() {
             document.getElementById('cookie-bar').style.display = 'none';
             localStorage.setItem('ascentia_cookie_consent', 'true');

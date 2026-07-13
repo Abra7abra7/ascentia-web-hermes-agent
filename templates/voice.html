@@ -75,6 +75,8 @@ let recordingTimer = null;
 let recordingSeconds = 0;
 let audioBlob = null;
 const MAX_DURATION = 60;
+let recognition = null;
+let finalTranscript = '';
 
 async function toggleRecording() {
     const statusText = document.getElementById('record-status');
@@ -100,6 +102,8 @@ async function toggleRecording() {
             mediaRecorder.start();
             isRecording = true;
             recordingSeconds = 0;
+            finalTranscript = '';
+            document.getElementById('transcript-section').classList.add('hidden');
 
             statusText.innerText = "Nahrávam... Kliknite pre zastavenie";
             statusText.style.color = "#FF3B30";
@@ -116,6 +120,36 @@ async function toggleRecording() {
                 }
             }, 1000);
 
+            // Web Speech API — real-time transcription
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'sk-SK';
+                recognition.continuous = true;
+                recognition.interimResults = true;
+
+                recognition.onresult = function(event) {
+                    let interim = '';
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const result = event.results[i];
+                        if (result.isFinal) {
+                            finalTranscript += result[0].transcript + ' ';
+                        } else {
+                            interim = result[0].transcript;
+                        }
+                    }
+                    // Show live transcript
+                    const transcriptDisplay = document.getElementById('transcript-display');
+                    transcriptionDisplay(transcriptDisplay, finalTranscript, interim);
+                };
+
+                recognition.onerror = function(event) {
+                    console.log('Speech recognition error:', event.error);
+                };
+
+                recognition.start();
+            }
+
         } catch (err) {
             statusText.innerText = "Chyba: Prístup k mikrofónu zamietnutý.";
             statusText.style.color = "#FF3B30";
@@ -125,7 +159,22 @@ async function toggleRecording() {
     }
 }
 
+function transcriptionDisplay(displayEl, final, interim) {
+    let html = '';
+    if (final) {
+        html += '<p><strong>Prepis:</strong> ' + final + '</p>';
+    }
+    if (interim) {
+        html += '<p><em style="color: #8892b0;">' + interim + '</em></p>';
+    }
+    displayEl.innerHTML = html;
+}
+
 function stopRecording() {
+    if (recognition) {
+        try { recognition.stop(); } catch(e) {}
+        recognition = null;
+    }
     if (mediaRecorder && isRecording) {
         mediaRecorder.stop();
         isRecording = false;
@@ -142,8 +191,8 @@ function stopRecording() {
 
 function afterRecording() {
     const transcriptSection = document.getElementById('transcript-section');
-    const transcriptDisplay = document.getElementById('transcript-display');
     const formWrapper = document.getElementById('voice-form-wrapper');
+    const transcriptDisplay = document.getElementById('transcript-display');
 
     transcriptSection.classList.remove('hidden');
     formWrapper.classList.remove('hidden');
@@ -151,10 +200,14 @@ function afterRecording() {
     const mins = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
     const secs = String(recordingSeconds % 60).padStart(2, '0');
 
+    if (!finalTranscript) {
+        finalTranscript = '(Pri spracovaní AI vygeneruje textový prepis z audio nahrávky.)';
+    }
+
     transcriptDisplay.innerHTML = `
         <p><strong>Trvanie:</strong> ${mins}:${secs}</p>
-        <p><strong>Stav:</strong> Audio nahrávka zachytená (${(audioBlob.size / 1024).toFixed(1)} KB)</p>
-        <p class="small-text-muted">Audio bude automaticky pripojené k dopytu. Pri spracovaní AI vygeneruje textový prepis.</p>
+        <p><strong>Prepis:</strong> ${finalTranscript}</p>
+        <p class="small-text-muted">Skontrolujte prepis, upravte údaje a odošlite.</p>
     `;
 
     transcriptSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -185,6 +238,7 @@ async function submitVoiceForm() {
     formData.append('email', email);
     formData.append('company', company);
     formData.append('audio', audioBlob, 'voice-inquiry.webm');
+    formData.append('transcript', finalTranscript);
 
     try {
         const response = await fetch('/api/voice-upload', {
@@ -198,6 +252,7 @@ async function submitVoiceForm() {
             document.getElementById('voice-form-wrapper').classList.add('hidden');
             document.getElementById('transcript-section').classList.add('hidden');
             document.getElementById('record-status').innerText = "Pripravený na nový záznam";
+            document.getElementById('record-status').style.color = "var(--text-primary)";
             document.getElementById('record-timer').style.display = "none";
             audioBlob = null;
         } else {
