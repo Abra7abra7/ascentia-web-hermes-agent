@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"database/sql"
 	"fmt"
 	"time"
 )
@@ -9,14 +8,30 @@ import (
 // RunFollowUpCheck skontroluje databázu pre dopyty staršie ako 24h
 // ktoré ešte nemajú odoslaný follow-up email
 func (s *Server) RunFollowUpCheck() {
+	fmt.Printf("[FOLLOW-UP] Running check at %s...\n", time.Now().Format(time.RFC3339))
+
+	// Najprv overme, či stĺpec follow_up_sent existuje
+	var colCheck string
+	err := s.DB.QueryRow("SELECT follow_up_sent FROM contact_inquiries LIMIT 1").Scan(&colCheck)
+	if err != nil {
+		fmt.Printf("[FOLLOW-UP] ERROR: follow_up_sent column might be missing: %v\n", err)
+		// Pokúsime sa pridať stĺpec
+		_, err = s.DB.Exec("ALTER TABLE contact_inquiries ADD COLUMN follow_up_sent INTEGER DEFAULT 0")
+		if err != nil {
+			fmt.Printf("[FOLLOW-UP] ERROR: could not add column: %v\n", err)
+			return
+		}
+		fmt.Printf("[FOLLOW-UP] Added follow_up_sent column\n")
+	}
+
 	// Nájdi dopyty staršie ako 24h bez follow-upu
 	rows, err := s.DB.Query(`
 		SELECT ci.id, ci.name, ci.email, ci.company, ci.message,
-		       ls.score, ls.budget, ls.urgency
+		       COALESCE(ls.score, 0), COALESCE(ls.budget, ''), COALESCE(ls.urgency, 'medium')
 		FROM contact_inquiries ci
 		LEFT JOIN lead_scores ls ON ls.inquiry_id = ci.id
 		WHERE ci.created_at < datetime('now', '-24 hours')
-		  AND ci.follow_up_sent = 0
+		  AND (ci.follow_up_sent IS NULL OR ci.follow_up_sent = 0)
 		ORDER BY ci.created_at ASC
 		LIMIT 10
 	`)
@@ -29,9 +44,8 @@ func (s *Server) RunFollowUpCheck() {
 	count := 0
 	for rows.Next() {
 		var id int64
-		var name, email, company, message string
-		var score sql.NullInt64
-		var budget, urgency sql.NullString
+		var name, email, company, message, budget, urgency string
+		var score int64
 
 		err := rows.Scan(&id, &name, &email, &company, &message, &score, &budget, &urgency)
 		if err != nil {
@@ -39,29 +53,21 @@ func (s *Server) RunFollowUpCheck() {
 			continue
 		}
 
-		scoreVal := int64(0)
-		if score.Valid {
-			scoreVal = score.Int64
-		}
-		budgetVal := "nezadaný"
-		if budget.Valid && budget.String != "" {
-			budgetVal = budget.String
-		}
-		urgencyVal := "medium"
-		if urgency.Valid && urgency.String != "" {
-			urgencyVal = urgency.String
-		}
+		analysis := generateInquiryAnalysis(name, company, message, budget, urgency, score)
+		sendFollowUpEmail(name, email, analysis, urgency)
 
-		analysis := generateInquiryAnalysis(name, company, message, budgetVal, urgencyVal, scoreVal)
-		sendFollowUpEmail(name, email, analysis, urgencyVal)
-
-		s.DB.Exec("UPDATE contact_inquiries SET follow_up_sent = 1 WHERE id = ?", id)
+		// Označ ako odoslaný - s overením
+		result, err := s.DB.Exec("UPDATE contact_inquiries SET follow_up_sent = 1 WHERE id = ?", id)
+		if err != nil {
+			fmt.Printf("[FOLLOW-UP] ERROR: failed to update follow_up_sent for id=%d: %v\n", id, err)
+		} else {
+			affected, _ := result.RowsAffected()
+			fmt.Printf("[FOLLOW-UP] Marked id=%d as followed up (rows affected: %d)\n", id, affected)
+		}
 		count++
 	}
 
-	if count > 0 {
-		fmt.Printf("[FOLLOW-UP] Sent %d follow-up emails\n", count)
-	}
+	fmt.Printf("[FOLLOW-UP] Sent %d follow-up emails\n", count)
 }
 
 // generateInquiryAnalysis vytvorí AI analýzu dopytu pre follow-up email

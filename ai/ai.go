@@ -1,10 +1,10 @@
 package ai
 
 import (
+	"ascentia-web/models"
 	"context"
 	"fmt"
 	"strings"
-	"ascentia-web/models"
 )
 
 type Provider interface {

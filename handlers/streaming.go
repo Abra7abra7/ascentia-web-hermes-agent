@@ -1,11 +1,11 @@
 package handlers
 
 import (
+	"ascentia-web/models"
 	"context"
 	"fmt"
 	"net/http"
 	"time"
-	"ascentia-web/models"
 )
 
 func (s *Server) HandleStreamingAI(w http.ResponseWriter, r *http.Request) {
@@ -13,7 +13,6 @@ func (s *Server) HandleStreamingAI(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/event-stream")
 	w.Header().Set("Cache-Control", "no-cache")
 	w.Header().Set("Connection", "keep-alive")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 
 	flusher, ok := w.(http.Flusher)
 	if !ok {

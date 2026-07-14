@@ -8,7 +8,7 @@ import (
 
 func TestMainRoutes(t *testing.T) {
 	mux := http.NewServeMux()
-	
+
 	// Registrujeme dummy handlery pre otestovanie routovania
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Domov"))

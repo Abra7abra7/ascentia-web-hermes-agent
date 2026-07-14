@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"html"
 	"io"
 	"net/http"
 	"os"
@@ -92,7 +93,7 @@ func (s *Server) saveVoiceInquiry(w http.ResponseWriter, name, email, company, t
 		transcript = "Hlasový dopyt od používateľa (audio nahrávka uložená na serveri). Prepis bude spracovaný prostredníctvom AI."
 	}
 
-	message := fmt.Sprintf("[Hlasový dopyt] %s", transcript)
+	message := fmt.Sprintf("[Hlasový dopyt] %s", html.EscapeString(transcript))
 
 	res, err := s.DB.Exec("INSERT INTO contact_inquiries (name, email, company, message, voice_path) VALUES (?, ?, ?, ?, ?)",
 		name, email, company, message, voicePath)

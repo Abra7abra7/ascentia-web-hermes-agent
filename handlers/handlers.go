@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"ascentia-web/ai"
 	"database/sql"
 	"html/template"
 	"net/http"
 	"os"
 	"path/filepath"
-	"ascentia-web/ai"
 )
 
 type Server struct {
@@ -48,11 +48,7 @@ func NewServer(db *sql.DB, aiProvider ai.Provider) (*Server, error) {
 
 // getGA4ID načíta GA4 ID z env alebo použije placeholder
 func getGA4ID() string {
-	id := os.Getenv("GA4_ID")
-	if id == "" {
-		return "G-XXXXXXX" // placeholder
-	}
-	return id
+	return os.Getenv("GA4_ID")
 }
 
 // pageData vráti spoločné PageData pre všetky šablóny

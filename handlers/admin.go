@@ -15,7 +15,8 @@ func (s *Server) HandleAdmin(w http.ResponseWriter, r *http.Request) {
 	}
 	adminPass := os.Getenv("ADMIN_PASS")
 	if adminPass == "" {
-		adminPass = "ascentia-admin-2026"
+		http.Error(w, "ADMIN_PASS not configured", http.StatusInternalServerError)
+		return
 	}
 	if password != adminPass {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
@@ -38,18 +39,18 @@ func (s *Server) HandleAdmin(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	type AdminInquiry struct {
-		ID         int
-		Name       string
-		Email      string
-		Company    string
-		Message    string
-		VoicePath  string
-		FollowUp   int
-		CreatedAt  string
-		Score      int
-		Budget     string
-		Urgency    string
-		Summary    string
+		ID        int
+		Name      string
+		Email     string
+		Company   string
+		Message   string
+		VoicePath string
+		FollowUp  int
+		CreatedAt string
+		Score     int
+		Budget    string
+		Urgency   string
+		Summary   string
 	}
 
 	var inquiries []AdminInquiry

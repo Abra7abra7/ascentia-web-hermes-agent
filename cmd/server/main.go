@@ -1,25 +1,23 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
 	"ascentia-web/ai"
 	"ascentia-web/db"
 	"ascentia-web/handlers"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
-	// Načítanie portu z prostredia alebo rozumný default
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	// Výber konfigurácie AI Providera zo špecifikácie .env
 	providerType := os.Getenv("AI_PROVIDER")
 	if providerType == "" {
-		providerType = "mock" // Safe default pre lokálne testovanie za 0€
+		providerType = "mock"
 	}
 
 	var aiProvider ai.Provider
@@ -43,7 +41,6 @@ func main() {
 		log.Println("[Ascentia Engine] Inicializovaný Mock Provider (Zero Cost)")
 	}
 
-	// Inicializácia DB
 	dbPath := os.Getenv("DB_PATH")
 	if dbPath == "" {
 		dbPath = "ascentia.db"
@@ -55,23 +52,26 @@ func main() {
 	}
 	defer sqliteDB.Close()
 
-	// Vytvorenie dedikovaného servera s handlermi a šablónami
+	// Štartovacia migrácia: označ všetky staré dopyty (>24h) ako odoslané follow-up,
+	// aby sa neposielali duplicitné emaily po reštarte
+	if _, err := sqliteDB.Exec("UPDATE contact_inquiries SET follow_up_sent = 1 WHERE created_at < datetime('now', '-24 hours') AND (follow_up_sent IS NULL OR follow_up_sent = 0)"); err != nil {
+		log.Printf("[MIGRACE] Varovanie: nepodarilo sa označiť staré dopyty: %v", err)
+	} else {
+		log.Println("[MIGRACE] Staré dopyty označené ako follow-up odoslané")
+	}
+
 	server, err := handlers.NewServer(sqliteDB, aiProvider)
 	if err != nil {
 		log.Fatalf("Chyba pri zostavovaní HTTP servera: %v", err)
 	}
 
-	// Štart automatizovaného follow-up schedulera (kontroluje dopyty staršie ako 24h)
 	server.StartFollowUpScheduler()
 
-	// Definícia prísne optimalizovaných rout
 	mux := http.NewServeMux()
 
-	// Statické súbory
 	fs := http.FileServer(http.Dir("static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	// Presmerovanie /robots.txt a /sitemap.xml na statické súbory (SEO/GEO)
 	mux.HandleFunc("/robots.txt", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "static/robots.txt")
 	})
@@ -79,7 +79,6 @@ func main() {
 		http.ServeFile(w, r, "static/sitemap.xml")
 	})
 
-	// Trasy pre jednotlivé stránky
 	mux.HandleFunc("/", server.HandleIndex)
 	mux.HandleFunc("/services", server.HandleServices)
 	mux.HandleFunc("/process", server.HandleProcess)
@@ -100,10 +99,8 @@ func main() {
 		server.RenderTemplate(w, r, "blog_voice_crm_case")
 	})
 
-	// Admin dashboard
 	mux.HandleFunc("/admin", server.HandleAdmin)
 
-	// POST trasy a zber leadov
 	mux.HandleFunc("/api/contact", server.HandleContactSubmit)
 	mux.HandleFunc("/api/stream", server.HandleStreamingAI)
 	mux.HandleFunc("/api/voice-upload", server.HandleVoiceUpload)
