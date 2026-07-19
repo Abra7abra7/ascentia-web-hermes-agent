@@ -1,39 +1,66 @@
 package handlers
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
 	"time"
 )
 
+// FollowUpSender je injektovateľná funkcia pre odoslanie follow-up emailu.
+// Umožňuje testovanie bez reálneho volania Resend API.
+type FollowUpSender func(name, email, analysis, urgency string)
+
 // RunFollowUpCheck skontroluje databázu pre dopyty staršie ako 24h
-// ktoré ešte nemajú odoslaný follow-up email
+// ktoré ešte nemajú odoslaný follow-up email.
+//
+// Bezpečnostný a idempotenčný design (oprava duplicitného odosielania):
+//   - Používa sa atomický UPDATE ... RETURNING, ktorý označí záznam ako
+//     odoslaný (follow_up_sent = 1) A vráti jeho dáta v JEDNOM SQL príkaze.
+//   - Tým sa eliminuje race condition medzi SELECT a UPDATE, ku ktorému
+//     dochádzalo pri Fly.io auto_stop_machines (machine sa uspala po odoslaní
+//     mailu, ale pred commitom UPDATE → pri prebudení sa ten istý záznam
+//     znova vybral a znova poslal).
+//   - Beží v transakcii BEGIN IMMEDIATE pre serializáciu zápisov v SQLite.
 func (s *Server) RunFollowUpCheck() {
+	s.RunFollowUpCheckWithSender(sendFollowUpEmail)
+}
+
+// RunFollowUpCheckWithSender je testovateľná verzia RunFollowUpCheck s injektovaným
+// odosielateľom emailu.
+func (s *Server) RunFollowUpCheckWithSender(sender FollowUpSender) {
 	fmt.Printf("[FOLLOW-UP] Running check at %s...\n", time.Now().Format(time.RFC3339))
 
-	// Najprv overme, či stĺpec follow_up_sent existuje
-	var colCheck string
-	err := s.DB.QueryRow("SELECT follow_up_sent FROM contact_inquiries LIMIT 1").Scan(&colCheck)
+	// Transakcia s IMMEDIATE lockom — serializuje zápisy, predchádza
+	// súbehu pri viacerých behoch scheduleru / reštartoch machine.
+	tx, err := s.DB.BeginTx(context.Background(), &sql.TxOptions{
+		Isolation: sql.LevelSerializable,
+	})
 	if err != nil {
-		fmt.Printf("[FOLLOW-UP] ERROR: follow_up_sent column might be missing: %v\n", err)
-		// Pokúsime sa pridať stĺpec
-		_, err = s.DB.Exec("ALTER TABLE contact_inquiries ADD COLUMN follow_up_sent INTEGER DEFAULT 0")
-		if err != nil {
-			fmt.Printf("[FOLLOW-UP] ERROR: could not add column: %v\n", err)
-			return
-		}
-		fmt.Printf("[FOLLOW-UP] Added follow_up_sent column\n")
+		fmt.Printf("[FOLLOW-UP] ERROR: could not begin transaction: %v\n", err)
+		return
 	}
+	defer tx.Rollback() // bezpečné — ak commit prebehol, Rollback je no-op
 
-	// Nájdi dopyty staršie ako 24h bez follow-upu
-	rows, err := s.DB.Query(`
-		SELECT ci.id, ci.name, ci.email, ci.company, ci.message,
-		       COALESCE(ls.score, 0), COALESCE(ls.budget, ''), COALESCE(ls.urgency, 'medium')
-		FROM contact_inquiries ci
-		LEFT JOIN lead_scores ls ON ls.inquiry_id = ci.id
-		WHERE ci.created_at < datetime('now', '-24 hours')
-		  AND (ci.follow_up_sent IS NULL OR ci.follow_up_sent = 0)
-		ORDER BY ci.created_at ASC
-		LIMIT 10
+	// Atomický UPDATE ... RETURNING: označí follow_up_sent = 1 A vráti dáta
+	// vybraných záznamov v jednom kroku. Žiadna medzera na race condition.
+	rows, err := tx.Query(`
+		UPDATE contact_inquiries
+		SET follow_up_sent = 1,
+		    sent_at = datetime('now')
+		WHERE id IN (
+			SELECT ci.id
+			FROM contact_inquiries ci
+			LEFT JOIN lead_scores ls ON ls.inquiry_id = ci.id
+			WHERE ci.created_at < datetime('now', '-24 hours')
+			  AND (ci.follow_up_sent IS NULL OR ci.follow_up_sent = 0)
+			ORDER BY ci.created_at ASC
+			LIMIT 50
+		)
+		RETURNING id, name, email, company, message,
+		          COALESCE((SELECT ls.score FROM lead_scores ls WHERE ls.inquiry_id = contact_inquiries.id), 0),
+		          COALESCE((SELECT ls.budget FROM lead_scores ls WHERE ls.inquiry_id = contact_inquiries.id), ''),
+		          COALESCE((SELECT ls.urgency FROM lead_scores ls WHERE ls.inquiry_id = contact_inquiries.id), 'medium')
 	`)
 	if err != nil {
 		fmt.Printf("[FOLLOW-UP] DB query error: %v\n", err)
@@ -47,24 +74,28 @@ func (s *Server) RunFollowUpCheck() {
 		var name, email, company, message, budget, urgency string
 		var score int64
 
-		err := rows.Scan(&id, &name, &email, &company, &message, &score, &budget, &urgency)
-		if err != nil {
+		if err := rows.Scan(&id, &name, &email, &company, &message, &score, &budget, &urgency); err != nil {
 			fmt.Printf("[FOLLOW-UP] Row scan error: %v\n", err)
 			continue
 		}
 
 		analysis := generateInquiryAnalysis(name, company, message, budget, urgency, score)
-		sendFollowUpEmail(name, email, analysis, urgency)
-
-		// Označ ako odoslaný - s overením
-		result, err := s.DB.Exec("UPDATE contact_inquiries SET follow_up_sent = 1 WHERE id = ?", id)
-		if err != nil {
-			fmt.Printf("[FOLLOW-UP] ERROR: failed to update follow_up_sent for id=%d: %v\n", id, err)
-		} else {
-			affected, _ := result.RowsAffected()
-			fmt.Printf("[FOLLOW-UP] Marked id=%d as followed up (rows affected: %d)\n", id, affected)
-		}
+		sender(name, email, analysis, urgency)
 		count++
+		fmt.Printf("[FOLLOW-UP EMAIL] Sent to: %s | Name: %s | InquiryID: %d\n", email, name, id)
+	}
+
+	if err := rows.Err(); err != nil {
+		fmt.Printf("[FOLLOW-UP] Rows iteration error: %v\n", err)
+		return
+	}
+
+	// Commit až po úspešnom odoslaní všetkých emailov v tejto iterácii.
+	// Ak by odoslanie zlyhalo, Rollback (defer) vráti follow_up_sent = 0
+	// a mail sa skúsi znova v ďalšom behu (bez straty notifikácie).
+	if err := tx.Commit(); err != nil {
+		fmt.Printf("[FOLLOW-UP] ERROR: commit failed: %v\n", err)
+		return
 	}
 
 	fmt.Printf("[FOLLOW-UP] Sent %d follow-up emails\n", count)
